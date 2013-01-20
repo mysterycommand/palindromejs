@@ -24,4 +24,4 @@ Also, not sure if these count, but it's sort of addressed by these utility libra
 * [Lodash 1.0.0-rc.3](https://github.com/bestiejs/lodash/blob/v1.0.0-rc.3/lodash.js#L813)
 * [Underscore 1.4.3](https://github.com/documentcloud/underscore/blob/1.4.3/underscore.js#L763)
 
-Also, not sure if there's any inheritance work being done in ES6/Next/Harmony (jeez, consolidate branding much?).
+Also, not sure if there's any inheritance work being done in ES6/Next/Harmony (jeez, consolidate yer brand guys).
