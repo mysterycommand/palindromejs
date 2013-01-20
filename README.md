@@ -20,7 +20,7 @@ This stuff has been implemented in various ways by a lot of MV* frameworks, and 
 * [Ember 1.0.0-pre.4](https://github.com/emberjs/ember.js/blob/v1.0.0-pre.4/packages/ember-runtime/lib/system/core_object.js#L337)
     * This is maybe the closest to what I want as it looks like it's using the ES5 Object.create functionality, but for my taste/use it seems overcomplicated.
 
-Also, not sure if these count, but it's sort of addressed by these utility libraries:
+Also, not sure if these count, but inheritance (or at least the notion of object extension) is sort of addressed by these utility libraries:
 
 * [Lodash 1.0.0-rc.3](https://github.com/bestiejs/lodash/blob/v1.0.0-rc.3/lodash.js#L813)
 * [Underscore 1.4.3](https://github.com/documentcloud/underscore/blob/1.4.3/underscore.js#L763)
