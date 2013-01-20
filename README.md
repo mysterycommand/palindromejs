@@ -18,6 +18,7 @@ This stuff has been implemented in various ways by a lot of MV* frameworks, and 
 * [Backbone 0.9.10](https://github.com/documentcloud/backbone/blob/0.9.10/backbone.js#L234)
 * [Spine 1.0.8](https://github.com/maccman/spine/blob/v1.0.8/lib/spine.js#L95)
 * [Ember 1.0.0-pre.4](https://github.com/emberjs/ember.js/blob/v1.0.0-pre.4/packages/ember-runtime/lib/system/core_object.js#L337)
+    * This is maybe the closest to what I want as it looks like it's using the ES5 Object.create functionality, but for my taste/use it seems overcomplicated.
 
 Also, not sure if these count, but it's sort of addressed by these utility libraries:
 

@@ -11,15 +11,14 @@
 define(
     [
         // dependency names
-        'src/App'
+        'lib/Extensible'
     ],
     function(
         // dependency arguments
-        App
+        Extensible
     ) {
         'use strict';
 
-        // var app = App.create();
-        // app.init();
+        console.log(Extensible);
     }
 );
