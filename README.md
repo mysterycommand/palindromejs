@@ -34,20 +34,63 @@ Anyway, it [looks like](http://wiki.ecmascript.org/doku.php?id=harmony:classes) 
 Something like:
 
 ```javascript
-var EventDispatcher = Extensible.extend({
-    // events stuff
-});
-var dispatcher = EventDispatcher.create();
+var CoreObject = (function() {
+    var _extend = function(parent, instanceProperties, classProperties) {
+        var child;
 
-var ValueObject = EventDispatcher.extend({
-    // value object stuff
-});
-var vo = ValueObject.create();
+        if (instanceProperties && instanceProperties.hasOwnProperty('constructor')) {
+            child = instanceProperties.constructor;
+        } else {
+            child = function() { return parent.apply(this, arguments); };
+        }
 
-var ValueObjectCollection = ValueObject.extend({
-    // collection stuff
+        // Do something to copy instance and class properties into child.
+        // Possibly, munge them into a propertiesObject object.
+        // Make _someMethod private?
+        // Make setSomeProperty into a private _someProperty and public set someProperty?
+
+        child.prototype = Object.create(parent.prototype);
+        child.prototype.constructor = child;
+        child.__super__ = parent.prototype;
+
+        return child;
+    };
+
+    var extend = function(instanceProperties, classProperties) {
+        var child = _extend(this, instanceProperties, classProperties);
+        child.extend = extend;
+        return child;
+    };
+
+    function CoreObject() {}
+    CoreObject.extend = extend;
+    return CoreObject;
+})();
+
+var Child = CoreObject.extend({
+    name: '',
+    constructor: function(name) {
+        this.name = name;
+    }
 });
-var collection = ValueObjectCollection.create();
+var child = new Child('child');
+
+var GrandChild = Child.extend();
+var grandChild = new GrandChild('grandChild');
+
+console.dir(new CoreObject());
+
+console.dir(child);
+console.log(child instanceof Child && child instanceof CoreObject);
+
+console.dir(grandChild);
+console.log(grandChild instanceof GrandChild && grandChild instanceof Child && grandChild instanceof CoreObject);
 ```
 
-… er something like that. Man, this is going to be a good test of my assumptions about a lot of low level inheritance stuff that I just take for granted. :)
+Okay, so after much discussion, and trial and error, I think I'm close to something with this above (also [here](https://github.com/mysterycommand/palindromejs/blob/master/app/js/main.js)). It's largely based on [Simple JavaScript Inheritance with Backbone](http://blog.usefunnel.com/2011/03/js-inheritance-with-backbone/) (March 2011) and the [js-toolbox](https://github.com/jimmydo/js-toolbox) project.
+
+I'm still not super confident, and I'm not at all sure how I'd set up tests to reassure myself … but I think this is the right road … the road to the future. We're still going to use `new` to instantiate objects as `new` appears [drastically faster](http://jsperf.com/object-create-vs-constructor-vs-object-literal/7) than `Object.create` (though I may still add a `CoreObject#create` method in the interest of lexical consistency).
+
+I also found this [Jay](https://github.com/incrementalco/jay) library's [typing](https://github.com/incrementalco/jay/blob/master/src/typing.js) stuff handy in thinking through some of the issues.
+
+And this [discussion of inheritence](https://github.com/jashkenas/coffee-script/issues/242) and `class` in CoffeeScript has lots of great info, including links to [Class Warfare: Classes vs. Prototypes](http://www.laputan.org/reflection/warfare.html) and [The Early History of Smalltalk](http://jashkenas.s3.amazonaws.com/misc/Smallhistory.pdf).
