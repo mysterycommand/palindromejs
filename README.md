@@ -34,81 +34,20 @@ Anyway, it [looks like](http://wiki.ecmascript.org/doku.php?id=harmony:classes) 
 Something like:
 
 ```javascript
-var MySuperClass = Extensible.extend({
-    someSuperProperty: 'duper',
-    someProperty: true,
-
-    constructor: function() {
-        console.log('Hi, from MySuperClass');
-    },
-
-    someMethod: function() {
-        console.log(this.someProperty);
-    },
-
-    someSuperMethod: function() {
-        console.log(this.someSuperProperty);
-    }
+var EventDispatcher = Extensible.extend({
+    // events stuff
 });
+var dispatcher = EventDispatcher.create();
 
-var mySuperInstance = MySuperClass.create();
-// 'Hi, from MySuperClass'
-
-mySuperInstance.someMethod();
-// true
-
-mySuperInstance.someSuperMethod();
-// 'duper'
-```
-
-```javascript
-var MyClass = MySuperClass.extend({
-    someOtherProperty: 42,
-
-    constructor: function(someArgument) {
-        this._super();
-        console.log('Hi, from MyClass');
-        this.someProperty = someArgument;
-    },
-    
-    someMethod: function() {
-        this._super(); // or maybe this._super.someMethod();
-        console.log(this.someProperty);
-    },
-    
-    someOtherMethod: function() {
-        console.log(this.someOtherProperty);
-    }
+var ValueObject = EventDispatcher.extend({
+    // value object stuff
 });
+var vo = ValueObject.create();
 
-var myInstance = MyClass.create(false);
-// 'Hi, from MySuperClass'
-// 'Hi, from MyClass'
-
-myInstance.someMethod();
-// true
-// false
-
-myInstance.someSuperMethod();
-// 'duper'
-
-myInstance.someOtherMethod();
-// 42
-```
-
-```javascript
-var MyOtherClass = MySuperClass.extend({
-    someSuperProperty: 'soopr'
+var ValueObjectCollection = ValueObject.extend({
+    // collection stuff
 });
-
-var myOtherInstance = MyOtherClass.create();
-// 'Hi, from MySuperClass'
-
-myOtherInstance.someMethod();
-// true
-
-myOtherInstance.someOtherMethod();
-// 'soopr'
+var collection = ValueObjectCollection.create();
 ```
 
 … er something like that. Man, this is going to be a good test of my assumptions about a lot of low level inheritance stuff that I just take for granted. :)

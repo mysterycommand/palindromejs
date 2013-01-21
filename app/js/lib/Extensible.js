@@ -17,7 +17,7 @@ define(
     ) {
         'use strict';
 
-        var Extensible = Object.create(Object.prototype, {});
+        var Extensible = Object.create(null, {});
         return Extensible;
     }
 );

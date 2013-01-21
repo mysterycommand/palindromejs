@@ -10,15 +10,39 @@
 
 define(
     [
+        'jquery',
+        'lodash'
         // dependency names
-        'lib/Extensible'
+        // 'lib/Extensible'
     ],
     function(
+        $,
+        _
         // dependency arguments
-        Extensible
+        // Extensible
     ) {
         'use strict';
 
-        console.log(Extensible);
+        // var Parent;
+        // Parent = function(name) {
+        //     this.name = name;
+        // };
+        // Parent.extend = function(properties) {
+        //     var prop;
+        //     var props = {};
+        //     for (prop in properties) {
+        //         props[prop] = {
+        //             enumerable: true,
+        //             value: properties[prop]
+        //         };
+        //     }
+        //     return Object.create(this, props);
+        // };
+
+        // var Child = Parent.extend({name: 'child'});
+        // var child = new Child();
+
+        // console.log(child);
+        // console.log(_.extend);
     }
 );
