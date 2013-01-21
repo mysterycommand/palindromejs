@@ -31,37 +31,56 @@ Anyway, it [looks like](http://wiki.ecmascript.org/doku.php?id=harmony:classes) 
 
 ### So, what do I want anyway?
 
+Somethin like:
+
 ```javascript
 var MySuperClass = Extensible.extend({
-    property: true,
+    someProperty: true,
 
     constructor: function() {
-        console.log(this.property);
+        console.log(this.someProperty);
     },
+
     someMethod: function() {
-        // other stuff
+        console.log(this.someProperty);
     }
 });
 
 var MyClass = MySuperClass.extend({
+    someOtherProperty: 42,
+
     constructor: function(someArgument) {
         this._super();
-        this.property = someArgument;
-        console.log(this.property);
+        this.someProperty = someArgument;
+        console.log(this.someProperty);
     },
+    
     someMethod: function() {
         this._super(); // or maybe this._super.someMethod();
-        // other stuff
+        console.log(this.someProperty);
     },
+    
     someOtherMethod: function() {
-        // do something
+        console.log(this.someOtherProperty);
     }
 });
 
+var mySuperInstance = MySuperClass.create();
+// true
+
+mySuperInstance.someMethod();
+// true
+
 var myInstance = MyClass.create(false);
-// should log:
 // true
 // false
+
+myInstance.someMethod();
+// true
+// false
+
+myInstance.someOtherMethod();
+// 42
 ```
 
-Man, this is going to be good at testing my assumptions about a lot of low level inheritance stuff that I just take for granted. :)
+… er something like that. Man, this is going to be a good test of my assumptions about a lot of low level inheritance stuff that I just take for granted. :)
