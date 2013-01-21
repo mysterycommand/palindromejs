@@ -31,7 +31,7 @@ Anyway, it [looks like](http://wiki.ecmascript.org/doku.php?id=harmony:classes) 
 
 ### So, what do I want anyway?
 
-Somethin like:
+Something like:
 
 ```javascript
 var MySuperClass = Extensible.extend({
