@@ -35,24 +35,40 @@ Something like:
 
 ```javascript
 var MySuperClass = Extensible.extend({
+    someSuperProperty: 'duper',
     someProperty: true,
 
     constructor: function() {
-        console.log(this.someProperty);
+        console.log('Hi, from MySuperClass');
     },
 
     someMethod: function() {
         console.log(this.someProperty);
+    },
+
+    someSuperMethod: function() {
+        console.log(this.someSuperProperty);
     }
 });
 
+var mySuperInstance = MySuperClass.create();
+// 'Hi, from MySuperClass'
+
+mySuperInstance.someMethod();
+// true
+
+mySuperInstance.someSuperMethod();
+// 'duper'
+```
+
+```javascript
 var MyClass = MySuperClass.extend({
     someOtherProperty: 42,
 
     constructor: function(someArgument) {
         this._super();
+        console.log('Hi, from MyClass');
         this.someProperty = someArgument;
-        console.log(this.someProperty);
     },
     
     someMethod: function() {
@@ -65,22 +81,34 @@ var MyClass = MySuperClass.extend({
     }
 });
 
-var mySuperInstance = MySuperClass.create();
-// true
-
-mySuperInstance.someMethod();
-// true
-
 var myInstance = MyClass.create(false);
-// true
-// false
+// 'Hi, from MySuperClass'
+// 'Hi, from MyClass'
 
 myInstance.someMethod();
 // true
 // false
 
+myInstance.someSuperMethod();
+// 'duper'
+
 myInstance.someOtherMethod();
 // 42
+```
+
+```javascript
+var MyOtherClass = MySuperClass.extend({
+    someSuperProperty: 'soopr'
+});
+
+var myOtherInstance = MyOtherClass.create();
+// 'Hi, from MySuperClass'
+
+myOtherInstance.someMethod();
+// true
+
+myOtherInstance.someOtherMethod();
+// 'soopr'
 ```
 
 … er something like that. Man, this is going to be a good test of my assumptions about a lot of low level inheritance stuff that I just take for granted. :)
