@@ -21,9 +21,13 @@ define(
     ) {
         'use strict';
 
+
+
         var obj = CoreObject.create();
         console.dir(obj);
         console.log(obj.name, obj.age); // undefined undefined
+
+
 
         var Child = CoreObject.extend({
             name: 'child',
@@ -41,6 +45,8 @@ define(
         console.log(child.name, child.age); // child undefined
         child.laugh(); // Hahahah!
         // child.giggle(); // TypeError!
+
+
 
         var GrandChild = Child.extend({
             name: 'grandChild',
