@@ -77,3 +77,7 @@ I also found this [Jay](https://github.com/incrementalco/jay) library's [typing]
 And this [discussion of inheritence](https://github.com/jashkenas/coffee-script/issues/242) and `class` in CoffeeScript has lots of great info, including links to [Class Warfare: Classes vs. Prototypes](http://www.laputan.org/reflection/warfare.html) and [The Early History of Smalltalk](http://jashkenas.s3.amazonaws.com/misc/Smallhistory.pdf).
 
 Also found [JavaScript object creation: Learning to live without "new"](http://www.adobe.com/devnet/html5/articles/javascript-object-creation.html) from February 2012. It's doing something similar, but I'd like to keep 'new' for object creation for reason noted above.
+
+### CoreObject!
+
+I used `Object.create`'s `defineProperties`, and property descriptors to automatically generate getters and/or setters for functions and stuff … it's cool, but I'm pretty tired right now.

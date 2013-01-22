@@ -96,6 +96,10 @@ define(
                 console.log('Setting _writeOnly to: ' + value);
                 this._writeOnly = value;
             },
+
+            getOtherProperty: function() {
+                return this._otherProperty;
+            },
             
             regularMethod: function() {
                 console.log('I\'m doing something!');
@@ -114,9 +118,9 @@ define(
         console.log(fancy.secret);
         
         console.log(fancy.readOnly);
-        
         fancy.writeOnly = 'I don\'t know why you\'d use this.';
-        
+        console.log(fancy.otherProperty);
+
         fancy.regularMethod();
         
         fancy.accessPrivateProperties();
