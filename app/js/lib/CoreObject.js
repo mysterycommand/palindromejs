@@ -125,11 +125,18 @@ define(
             var extend = function(instanceProperties, classProperties) {
                 var child = _extend(this, instanceProperties, classProperties);
                 child.extend = extend;
+                child.create = create;
                 return child;
+            };
+
+            var create = function(constructorArguments) {
+                var Ctor = this;
+                return new Ctor(constructorArguments);
             };
 
             function CoreObject() {}
             CoreObject.extend = extend;
+            CoreObject.create = create;
             return CoreObject;
         })();
 

@@ -27,12 +27,12 @@ define(
                 this.name = name;
             }
         });
-        var child = new Child('child');
+        var child = Child.create('child');
 
         var GrandChild = Child.extend();
-        var grandChild = new GrandChild('grandChild');
+        var grandChild = GrandChild.create('grandChild');
 
-        console.dir(new CoreObject());
+        console.dir(CoreObject.create());
         
         console.dir(child);
         console.log(child instanceof Child && child instanceof CoreObject);
