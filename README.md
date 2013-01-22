@@ -34,57 +34,38 @@ Anyway, it [looks like](http://wiki.ecmascript.org/doku.php?id=harmony:classes) 
 Something like:
 
 ```javascript
-var CoreObject = (function() {
-    var _extend = function(parent, instanceProperties, classProperties) {
-        var child;
-
-        if (instanceProperties && instanceProperties.hasOwnProperty('constructor')) {
-            child = instanceProperties.constructor;
-        } else {
-            child = function() { return parent.apply(this, arguments); };
-        }
-
-        // Do something to copy instance and class properties into child.
-        // Possibly, munge them into a propertiesObject object.
-        // Make _someMethod private?
-        // Make setSomeProperty into a private _someProperty and public set someProperty?
-
-        child.prototype = Object.create(parent.prototype);
-        child.prototype.constructor = child;
-        child.__super__ = parent.prototype;
-
-        return child;
-    };
-
-    var extend = function(instanceProperties, classProperties) {
-        var child = _extend(this, instanceProperties, classProperties);
-        child.extend = extend;
-        return child;
-    };
-
-    function CoreObject() {}
-    CoreObject.extend = extend;
-    return CoreObject;
-})();
+var obj = CoreObject.create();
+console.log(obj.name, obj.age); // undefined undefined
 
 var Child = CoreObject.extend({
-    name: '',
+    name: 'child',
     constructor: function(name) {
-        this.name = name;
+        console.log('Hello from ' + name + '.');
+    },
+    laugh: function() {
+        console.log('Hahahah!');
     }
 });
-var child = new Child('child');
+var child = Child.create('Charlie'); // Hello from Charlie.
 
-var GrandChild = Child.extend();
-var grandChild = new GrandChild('grandChild');
+console.log(child instanceof Child && child instanceof CoreObject); // true
+console.log(child.name, child.age); // child undefined
+child.laugh(); // Hahahah!
+child.giggle(); // TypeError!
 
-console.dir(new CoreObject());
+var GrandChild = Child.extend({
+    name: 'grandChild',
+    age: 12,
+    giggle: function() {
+        console.log('Teehee!');
+    }
+});
+var grandChild = GrandChild.create('Esther'); // Hello from Esther.
 
-console.dir(child);
-console.log(child instanceof Child && child instanceof CoreObject);
-
-console.dir(grandChild);
-console.log(grandChild instanceof GrandChild && grandChild instanceof Child && grandChild instanceof CoreObject);
+console.log(grandChild instanceof GrandChild && grandChild instanceof Child && grandChild instanceof CoreObject); // true
+console.log(grandChild.name, grandChild.age); // grandChild 12
+grandChild.laugh(); // Hahahah!
+grandChild.giggle(); // Teehee!
 ```
 
 Okay, so after much discussion, and trial and error, I think I'm close to something with this above (also [here](https://github.com/mysterycommand/palindromejs/blob/master/app/js/main.js)). It's largely based on [Simple JavaScript Inheritance with Backbone](http://blog.usefunnel.com/2011/03/js-inheritance-with-backbone/) (March 2011) and the [js-toolbox](https://github.com/jimmydo/js-toolbox) project.
