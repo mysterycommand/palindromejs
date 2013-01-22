@@ -1,7 +1,7 @@
 /** ====================================================================================================== **/
 /**
  * @fileOverview
- * The main application entry point.
+ * The base 'class' for all objects in the Palindrome JS framework. Sets up inheritence.
  *
  * @author Matt Hayes <matt@mysterycommand.com>
  * @version 0.0.1
