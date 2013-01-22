@@ -17,35 +17,123 @@ define(
 
         var _extend = function(parent, instanceProps, classProps) {
             var child;
+            var prop;
 
             if (instanceProps && instanceProps.hasOwnProperty('constructor')) {
                 child = instanceProps.constructor;
+                delete instanceProps.constructor;
             } else {
                 child = function() { return parent.apply(this, arguments); };
             }
 
-            // Do something to copy instance and class properties into child.
-            // Possibly, munge them into a propertiesObject object.
-            // Make _someMethod private?
-            // Make setSomeProperty into a private _someProperty and public set someProperty?
+            var propsObj = {};
+            var isPrivate;
+            var isMethod;
 
-            child.prototype = Object.create(parent.prototype);
+            var isGetter;
+            var isSetter;
+
+            var propName;
+            var privatePropName;
+            var hasMatchingPrivateProp;
+
+            var setterName;
+            var hasMatchingSetter;
+
+            var getterName;
+            var hasMatchingGetter;
+
+            if ( !! instanceProps) {
+                for (prop in instanceProps) {
+                    isPrivate = prop.indexOf('_') === 0;
+
+                    if (isPrivate) {
+                        propsObj[prop] = {
+                            value: instanceProps[prop],
+                            writable: true,
+                            enumerable: false,
+                            configurable: false
+                        };
+                    } else {
+                        isMethod = typeof instanceProps[prop] === 'function';
+
+                        if (isMethod) {
+                            isGetter = prop.indexOf('get') === 0;
+                            isSetter = prop.indexOf('set') === 0;
+                            propName = prop;
+
+                            if (isGetter || isSetter) {
+                                // getProperty becomes property and _property
+                                propName = prop.substr(3, 1).toLowerCase() + prop.substr(4);
+                                privatePropName = '_' + propName;
+                                hasMatchingPrivateProp = ( !! instanceProps[privatePropName]);
+
+                                if (hasMatchingPrivateProp) {
+                                    propsObj[privatePropName] = {
+                                        value: instanceProps[privatePropName],
+                                        writable: true, // this could maybe be false, if there's no matching setter
+                                        enumerable: false,
+                                        configurable: false
+                                    };
+                                    delete instanceProps[privatePropName];
+                                    // delete the private property so we don't iterate over it again
+                                }
+                            }
+
+                            // it's a public method
+                            propsObj[propName] = {
+                                enumerable: true,
+                                configurable: false
+                            };
+
+                            if (isGetter) {
+                                propsObj[propName].get = instanceProps[prop];
+                                // we found a getter, look for a setter
+                                setterName = 's' + prop.substr(1);
+                                hasMatchingSetter = ( !! instanceProps[setterName]);
+                                if (hasMatchingSetter) {
+                                    // we found a matching setter
+                                    propsObj[propName].set = instanceProps[setterName];
+                                    delete instanceProps[setterName];
+                                    // delete the setter so we don't iterate over it again
+                                }
+                            } else if (isSetter) {
+                                propsObj[propName].set = instanceProps[prop];
+                                // we found a setter, look for a getter
+                                getterName = 'g' + prop.substr(1);
+                                hasMatchingGetter = ( !! instanceProps[getterName]);
+                                if (hasMatchingGetter) {
+                                    // we found a matching getter
+                                    propsObj[propName].get = instanceProps[getterName];
+                                    delete instanceProps[getterName];
+                                    // delete the getter so we don't iterate over it again
+                                }
+                            } else {
+                                // it's just a regular method
+                                propsObj[propName].value = instanceProps[prop];
+                                propsObj[propName].writable = true;
+                            }
+                        } else {
+                            // it's a public property
+                            propsObj[prop] = {
+                                value: instanceProps[prop],
+                                writable: true,
+                                enumerable: true,
+                                configurable: false
+                            };
+                        }
+                    }
+                }
+            }
+
+            child.prototype = Object.create(parent.prototype, propsObj);
             child.prototype.constructor = child;
             child.proto = parent.prototype;
-
-            var prop;
 
             // own properies of the parent get copied to the new class
             for (prop in parent) {
                 if (parent.hasOwnProperty(prop)) {
                     child[prop] = parent[prop];
-                }
-            }
-
-            // instance properties get copied to the new prototype
-            if ( !! instanceProps) {
-                for (prop in instanceProps) {
-                    child.prototype[prop] = instanceProps[prop];
                 }
             }
 
