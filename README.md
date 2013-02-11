@@ -83,3 +83,7 @@ Also found [JavaScript object creation: Learning to live without "new"](http://w
 ### CoreObject!
 
 I used `Object.create`'s `defineProperties`, and property descriptors to automatically generate getters and/or setters for functions and stuff … it's cool, but I'm pretty tired right now.
+
+### Tests! Continuous Integration!
+
+
