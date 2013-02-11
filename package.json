@@ -1,23 +1,34 @@
 { 
-  "name" :         "palindromejs",
-  "description":   "An MVCVM Framework for client-side JavaScript applications. It's not for you, and you probably wouldn't like it.",
-  "keywords":      [""],
+  "name": "palindromejs",
   
-  "version":       "0.0.1",
+  "description": "An MVCVM Framework for client-side JavaScript applications. It's not for you, and you probably wouldn't like it.",
+
+  "keywords": [],
   
-  "author":        "Matt Hayes <matt@mysterycommand.com> (http://mysterycommand.com)",
+  "version": "0.0.1",
   
-  "licenses":      [],
+  "author": "Matt Hayes <matt@mysterycommand.com> (http://mysterycommand.com)",
   
-  "repository":    {"type": "git", "url": "http://github.com/mysterycommand/palindromejs.git"},
-  "bugs":          {"url": "http://github.com/mysterycommand/palindromejs/issues"},
+  "licenses": [],
   
-  "scripts":       {"test": "cake test"},
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/mysterycommand/palindromejs.git"
+  },
+  
+  "bugs": {
+    "url": "http://github.com/mysterycommand/palindromejs/issues"
+  },
+  
+  "scripts": {
+    "test": "cake test"
+  },
   
   "dependencies": {
   },
 
   "devDependencies": {
-    "mocha-phantomjs": "2.0.0"
+    "mocha-phantomjs": "2.0.0",
+    "yeoman": "0.9.4"
   }
 }
