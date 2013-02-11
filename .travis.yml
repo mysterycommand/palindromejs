@@ -3,4 +3,4 @@ node_js:
     - "0.8"
 before_script:
     - phantomjs --version
-script: cake test
+script: mocha-phantomjs test/**/*.html

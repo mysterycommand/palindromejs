@@ -18,6 +18,7 @@ define(
             return parent;
         };
 
+        // I want the syntax to look something like:
         extendz({}, {
             static: {
                 STATIC_A: true,
