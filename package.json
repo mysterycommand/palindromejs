@@ -20,6 +20,7 @@
 
   "devDependencies": {
     "chai": "1.5.x",
-    "requirejs": "2.1.2"
+    "requirejs": "2.1.2",
+    "mocha-phantomjs": "2.0.0"
   }
 }
