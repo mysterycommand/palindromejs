@@ -1,30 +1,33 @@
 /** ====================================================================================================== **/
 /**
  * @fileOverview
- * Main application configuration.
+ * Main testing entry point.
  *
  * @author Matt Hayes <matt@mysterycommand.com>
  * @version 0.0.1
  */
 /** ====================================================================================================== **/
 
+
 require.config(
     {
-        baseUrl: 'js/',
-        deps: ['main'],
-
+        baseUrl: '../app/js/',
         paths: {
-            jquery: 'vendor/jquery-1.9.0',
-            lodash: 'vendor/lodash-v1.0.0-rc.3'
-        },
-        
-        shim: {
-            jquery: {
-                exports: '$'
-            },
-            lodash: {
-                exports: '_'
-            }
+            app: '../../app/js',
+            test: '../../test/js'
         }
+    }
+);
+
+require(
+    [
+        'test/lib/CoreObject.test'
+    ],
+
+    function(
+    ) {
+        'use strict';
+
+        return (window.mochaPhantomJS) ? window.mochaPhantomJS.run() : window.mocha.run();
     }
 );
