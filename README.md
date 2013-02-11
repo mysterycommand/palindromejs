@@ -89,7 +89,8 @@ I used `Object.create`'s `defineProperties`, and property descriptors to automat
 You should be able to run:
 ```
 git clone https://github.com/mysterycommand/palindromejs.git
-cd palindromjs
+cd palindromejs
+npm install
 mocha-phantomjs test/index.html
 ```
 
