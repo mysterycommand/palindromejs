@@ -3,4 +3,4 @@ node_js:
     - "0.8"
 before_script:
     - phantomjs --version
-script: mocha-phantomjs test/**/*.html
+script: mocha-phantomjs test/index.html

@@ -21,8 +21,13 @@ define(
         // I want the syntax to look something like:
         extendz({}, {
             static: {
+                // vars
                 STATIC_A: true,
-                STATIC_B: 'something'
+                STATIC_B: 'something',
+                const: {
+                    STATIC_C: false,
+                    STATIC_D: 'somethingElse'
+                }
             },
             get: {
                 getterA: function() { return this.private.propA; },
@@ -33,26 +38,29 @@ define(
                     this.private.propA = value;
                 }
             },
-            private: {
-                propA: true,
-                methodA: function() {
-                    if (this.private.propA) { console.log('A'); }
-                }
-            },
+            // private: {
+            //     propA: true,
+            //     methodA: function() {
+            //         if (this.private.propA) { console.log('A'); }
+            //     }
+            // },
             
             constructor: function() {
             },
 
             propB: false,
             propC: 1234567890,
-            propD: 'This is a test.',
+            
+            _propD: 'This is a test.',
+
             methodB: function(arg) {
                 console.log(arg);
             },
             methodC: function() {
                 return this.private.propA;
             },
-            methodD: function() {
+            
+            _methodD: function() {
                 return 'D';
             }
         });
