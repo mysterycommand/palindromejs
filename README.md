@@ -86,4 +86,11 @@ I used `Object.create`'s `defineProperties`, and property descriptors to automat
 
 ### Tests! Continuous Integration!
 
+You should be able to run:
+```
+git clone https://github.com/mysterycommand/palindromejs.git
+cd palindromjs
+mocha-phantomjs test/index.html
+```
 
+… and, at the moment, get one test pass 'CoreObject should exist.'.
