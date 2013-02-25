@@ -8,9 +8,12 @@
  */
 /** ====================================================================================================== **/
 
+'use strict';
+
 require.config(
     {
         baseUrl: 'js/',
+
         deps: ['main'],
 
         paths: {
@@ -20,10 +23,17 @@ require.config(
         
         shim: {
             jquery: {
-                exports: '$'
+                exports: '$',
+                init: function() {
+                    return window.$.noConflict();
+                }
             },
+
             lodash: {
-                exports: '_'
+                exports: '_',
+                init: function() {
+                    return window._.noConflict();
+                }
             }
         }
     }

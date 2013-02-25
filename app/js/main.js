@@ -21,123 +21,137 @@ define(
     ) {
         'use strict';
 
+        var core = CoreObject.create();
+        console.log(core);
 
-
-        var obj = CoreObject.create();
-        console.dir(obj);
-        console.log(obj.name, obj.age); // undefined undefined
-
-
-
-        var Child = CoreObject.extend({
-            name: 'child',
-            constructor: function(name) {
-                console.log('Hello from ' + name + '.');
+        var Person = CoreObject.extend({
+            get: {
+                name: function() {
+                    return [
+                        this._fname,
+                        this._mname,
+                        this._lname
+                    ].join(' ');
+                },
+                age: function() {
+                    return this._age;
+                }
             },
-            laugh: function() {
-                console.log('Hahahah!');
+            set: {
+                age: function(value) {
+                    this._age = value;
+                }
+            },
+            constructor: function Person(options) {
+                this._age = 0;
+                this._fname = options.fname;
+                this._mname = options.mname;
+                this._lname = options.lname;
             }
         });
-        var child = Child.create('Charlie'); // Hello from Charlie.
 
-        console.dir(child);
-        console.log(child instanceof Child && child instanceof CoreObject); // true
-        console.log(child.name, child.age); // child undefined
-        child.laugh(); // Hahahah!
-        // child.giggle(); // TypeError!
+        var Parent = Person.extend({
+            get: {
+                numChildren: function() {
+                    return this._children.length;
+                }
+            },
 
+            constructor: function Parent(options) {
+                Person.call(this, options);
+                this._children = [];
+            },
 
-
-        var GrandChild = Child.extend({
-            name: 'grandChild',
-            age: 12,
-            giggle: function() {
-                console.log('Teehee!');
+            addChild: function() {
+                this._children.push(this.numChildren);
             }
         });
-        var grandChild = GrandChild.create('Esther'); // Hello from Esther.
-        grandChild.name = 'greatGrandChild';
 
-        console.dir(grandChild);
-        console.log(grandChild instanceof GrandChild && grandChild instanceof Child && grandChild instanceof CoreObject); // true
-        console.log(grandChild.name, grandChild.age); // grandChild 12
-        grandChild.laugh(); // Hahahah!
-        grandChild.giggle(); // Teehee!
+        var father = Parent.create({
+            fname: 'Michael',
+            mname: 'Edward',
+            lname: 'Hayes'
+        });
 
+        console.log(father);
+        console.log(father.name);
+        console.log(father.age);
+        console.log(father.numChildren);
 
+        father.addChild();
+        father.addChild();
+        father.addChild();
+        father.age = 60;
 
-        var FancyObject = CoreObject.extend({
+        console.log(father.age);
+        console.log(father.numChildren);
+        console.log(father instanceof Parent && father instanceof Person && father instanceof CoreObject);
+        console.log(father.toString());
 
-            _secret: 'Shhh!',
-            _readOnly: 'No changing.',
-            _writeOnly: '',
-            _superSecret: 'No really … shhh!',
-
-            publicProperty: 12345,
-            
-            constructor: function() {
-                console.log('Hello fancy!');
-                console.dir(this);
+        var EventDispatcher = CoreObject.extend({
+            constructor: function EventDispatcher(options) {
+                this.target = options.target || this;
             },
             
-            getSecret: function() {
-                return this._secret;
+            addEventListener: function(type, listener/*, useCapture, priority, useWeakReverence */) {
+                console.log(type);
+            },
+            
+            dispatchEvent: function(event) {
+                console.log(event.type);
+                return false;
+            },
+            
+            hasEventListener: function(type) {
+                return false;
+            },
+            
+            removeEventListener: function(type, listener/*, useCapture */) {
+                console.log(type);
             },
 
-            setSecret: function(value) {
-                this._secret = value;
-            },
-            
-            getReadOnly: function () {
-                return 'The value of _readOnly is: ' + this._readOnly;
-            },
-            
-            setWriteOnly: function (value) {
-                console.log('Setting _writeOnly to: ' + value);
-                this._writeOnly = value;
-            },
-
-            getOtherProperty: function() {
-                return this._otherProperty;
-            },
-            
-            regularMethod: function() {
-                console.log('I\'m doing something!');
-            },
-            
-            accessPrivateProperties: function() {
-                console.log('I\'m whispering! ' + this._superSecret);
+            willTrigger: function(type) {
+                return false;
             }
         });
-        var fancy = FancyObject.create();
 
-        console.dir(fancy);
+        var Event = CoreObject.extend({
+            static: {
+                const: {
+                    CREATE: 'eventCreate',
+                    UPDATE: 'eventUpdate',
+                    RENDER: 'eventRender',
+                    DELETE: 'eventDelete'
+                }
+            },
+            
+            get: {
+                bubbles: function() { return this._bubbles; },
+                cancelable: function() { return this._cancelable; },
+                currentTarget: function() { return this._currentTarget; },
+                eventPhase: function() { return this._eventPhase; },
+                target: function() { return this._target; },
+                type: function() { return this._type; },
+            },
+            
+            constructor: function Event(options) {
+                this._type = options.type;
+                this._bubbles = options.bubbles || false;
+                this._cancelable = options.cancelable || false;
+            },
 
-        console.log(fancy.secret);
-        fancy.secret = 'Whispers!';
-        console.log(fancy.secret);
-        
-        console.log(fancy.readOnly);
-        fancy.writeOnly = 'I don\'t know why you\'d use this.';
-        console.log(fancy.otherProperty);
+            clone: function() {
+                return Event.create({
+                    type: this.type,
+                    bubbles: this.bubbles,
+                    cancelable: this.cancelable
+                });
+            },
 
-        fancy.regularMethod();
-        
-        fancy.accessPrivateProperties();
-        
-        console.log(fancy._secret);
-        console.log(fancy._readOnly);
-        console.log(fancy._writeOnly);
-        console.log(fancy._superSecret);
-
-        fancy._secret = 'test';
-        fancy._readOnly = 'test';
-        fancy._writeOnly = 'test';
-        fancy._superSecret = 'test';
-        
-        console.log(fancy._secret);
-        console.log(fancy._readOnly);
-        console.log(fancy._writeOnly);
-        console.log(fancy._superSecret);
+            isDefaultPrevented: function() { return false; },
+            preventDefault: function() {},
+            stopImmediatePropagation: function() {},
+            stopPropagation: function() {}
+        });
     }
 );

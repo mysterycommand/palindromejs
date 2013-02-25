@@ -17,28 +17,22 @@ define(
     ) {
         'use strict';
 
-        var extend = function(properties) {
-            var Child = extendz(this, properties);
-
-            Child.extend = extend;
-            Child.create = create;
-            
-            return Child;
-        };
-
-        var create = function() {
-            // I think this would work, but I think using 'new' is significantly faster.
-            // TODO: Find JSPerf tests to support my assumption.
-            // return this.apply(this, arguments);
-            
-            var This = this;
-            return new This(arguments);
-        };
-
         var CoreObject = extendz(Object, {
             static: {
-                extend: extend,
-                create: create
+                const: {
+                    extend: function(properties) {
+                        var Child = extendz(this, properties);
+
+                        Child.extend = CoreObject.extend;
+                        Child.create = CoreObject.create;
+                        
+                        return Child;
+                    },
+                    create: function(options) {
+                        var This = this;
+                        return new This(options);
+                    }
+                }
             },
             constructor: function CoreObject() {
             },
