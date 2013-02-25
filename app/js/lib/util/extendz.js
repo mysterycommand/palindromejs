@@ -14,56 +14,89 @@ define(
     ) {
         'use strict';
 
-        var extendz = function(parent, members) {
-            return parent;
-        };
+        var extendz = function(Parent, properties) {
+            var Child;
+            var propertiesObject = {};
+            var descriptor;
+            var property;
 
-        // I want the syntax to look something like:
-        extendz({}, {
-            static: {
-                // vars
-                STATIC_A: true,
-                STATIC_B: 'something',
-                const: {
-                    STATIC_C: false,
-                    STATIC_D: 'somethingElse'
+            if (properties.hasOwnProperty('constructor')) {
+                Child = properties.constructor;
+            } else {
+                for (property in properties) {
+                    if (property !== 'static') {
+                        throw new Error('Objects with non-static members must define a constructor.');
+                    }
                 }
-            },
-            get: {
-                getterA: function() { return this.private.propA; },
-                getterB: function() { return 'Some computed property.'; }
-            },
-            set: {
-                setterA: function(value) {
-                    this.private.propA = value;
-                }
-            },
-            // private: {
-            //     propA: true,
-            //     methodA: function() {
-            //         if (this.private.propA) { console.log('A'); }
-            //     }
-            // },
-            
-            constructor: function() {
-            },
-
-            propB: false,
-            propC: 1234567890,
-            
-            _propD: 'This is a test.',
-
-            methodB: function(arg) {
-                console.log(arg);
-            },
-            methodC: function() {
-                return this.private.propA;
-            },
-            
-            _methodD: function() {
-                return 'D';
+                Child = {};
             }
-        });
+
+            if ( !! properties.static) {
+                if ( !! properties.static.const) {
+                    for (property in properties.static.const) {
+                        Object.defineProperty(Child, property, {
+                            value: properties.static.const[property],
+                            configurable: false,
+                            enumerable: true,
+                            writable: false
+                        });
+                    }
+                    delete properties.static.const;
+                }
+
+                for (property in properties.static) {
+                    Object.defineProperty(Child, property, {
+                        value: properties.static[property],
+                        configurable: false,
+                        enumerable: true,
+                        writable: true
+                    });
+                }
+                delete properties.static;
+            }
+
+            if ( !! properties.get) {
+                for (property in properties.get) {
+                    descriptor = propertiesObject[property] || {
+                        configurable: false,
+                        enumerable: true
+                    };
+                    descriptor.get = properties.get[property];
+
+                    propertiesObject[property] = descriptor;
+                }
+                delete properties.get;
+            }
+
+            if ( !! properties.set) {
+                for (property in properties.set) {
+                    descriptor = propertiesObject[property] || {
+                        configurable: false,
+                        enumerable: true
+                    };
+                    descriptor.set = properties.set[property];
+
+                    propertiesObject[property] = descriptor;
+                }
+                delete properties.set;
+            }
+
+            for (property in properties) {
+                if (propertiesObject.hasOwnProperty(property)) {
+                    throw new Error('The property ' + property + ' was already defined as: ' + propertiesObject[property]);
+                }
+                descriptor = {
+                    value: properties[property],
+                    configurable: false,
+                    enumerable: true,
+                    writable: true
+                };
+                propertiesObject[property] = descriptor;
+            }
+
+            Child.prototype = Object.create(Parent.prototype, propertiesObject);
+            return Child;
+        };
 
         return extendz;
     }

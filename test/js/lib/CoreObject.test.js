@@ -20,6 +20,8 @@ define(
         describe('CoreObject', function() {
             it('should exist', function() {
                 CoreObject.should.exist;
+                var c = CoreObject.create();
+                console.log(c.toString());
             });
         });
     }

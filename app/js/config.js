@@ -14,8 +14,8 @@ require.config(
         deps: ['main'],
 
         paths: {
-            jquery: 'vendor/jquery-1.9.0',
-            lodash: 'vendor/lodash-v1.0.0-rc.3'
+            jquery: 'vendor/jquery-1.9.1',
+            lodash: 'vendor/lodash-v1.0.1'
         },
         
         shim: {
