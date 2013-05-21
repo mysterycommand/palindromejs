@@ -126,6 +126,14 @@ module.exports = function (grunt) {
                 }
             }
         },
+        mocha_phantomjs: {
+            options: {
+                reporter: 'spec'
+            },
+            all: [
+                'test/{,**/}*.html'
+            ]
+        },
         coffee: {
             dist: {
                 files: [{
@@ -339,7 +347,8 @@ module.exports = function (grunt) {
         'clean:server',
         'concurrent:test',
         'connect:test',
-        'mocha'
+        // 'mocha',
+        'mocha_phantomjs'
     ]);
 
     grunt.registerTask('build', [
