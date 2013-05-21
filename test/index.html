@@ -1,4 +1,27 @@
-<!DOCTYPE html>
+<!--
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Mocha Spec Runner</title>
+    <link rel="stylesheet" href="lib/mocha/mocha.css">
+</head>
+<body>
+    <div id="mocha"></div>
+    <script src="lib/mocha/mocha.js"></script>
+    <script>mocha.setup('bdd')</script>
+
+    <script src="lib/chai.js"></script>
+    <script>var expect = chai.expect</script>
+
+    <script src="spec/test.js"></script>
+
+    <script>mocha.run()</script>
+</body>
+</html>
+-->
+
+<!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -6,48 +29,44 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
         <title></title>
+
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
-        <link rel="stylesheet" href="css/mocha-1.8.1.css">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link rel="stylesheet" href="../.tmp/styles/main.css">
+        <link rel="stylesheet" href="../app/bower_components/mocha/mocha.css">
+
+        <script src="../app/bower_components/modernizr/modernizr.js"></script>
     </head>
     <body>
-        <!--[if lt IE 7]>
-            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-        <![endif]-->
+        <div class="container">
+        </div>
 
-        <!-- Add your site or application content here -->
-        <div id="js-app-root"></div>
         <div id="mocha"></div>
 
-        <script src="js/vendor/mocha-1.8.1.js"></script>
+        <script src="../app/bower_components/mocha/mocha.js"></script>
         <script>
             mocha.setup(
                 {
                     ui: 'bdd',
-                    globals: [
-                        'jQuery*',
-                        '$',
-                        '_',
-
-                        // Firefox (in OSX?) seems to add it's own global 'top',
-                        // and mocha's global leak detector doesn't like it.
-                        'top'
-                    ],
+                    globals: [],
                     reporter: 'html'
                 }
             );
         </script>
 
-        <script src="js/vendor/chai-1.5.0.js"></script>
+        <script src="../app/bower_components/chai/chai.js"></script>
         <script>
             should = chai.should();
         </script>
 
-        <!-- build:js js/amd-app.js -->
-        <script data-main="../app/js/config" src="../app/js/vendor/require-2.1.4.js"></script>
-        <!-- endbuild -->
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
 
+        <script data-main="scripts/config" src="../app/bower_components/requirejs/require.js"></script>
     </body>
 </html>
