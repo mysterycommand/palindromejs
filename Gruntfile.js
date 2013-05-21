@@ -64,6 +64,7 @@ module.exports = function (grunt) {
                         return [
                             mountFolder(connect, '.tmp'),
                             mountFolder(connect, yeomanConfig.app),
+                            mountFolder(connect, '.'),
                             lrSnippet
                         ];
                     }
@@ -73,8 +74,7 @@ module.exports = function (grunt) {
                 options: {
                     middleware: function (connect) {
                         return [
-                            mountFolder(connect, '.tmp'),
-                            mountFolder(connect, 'test')
+                            mountFolder(connect, '.')
                         ];
                     }
                 }
@@ -119,17 +119,13 @@ module.exports = function (grunt) {
             ]
         },
         mocha: {
-            all: ['test/{,**/}*.html'],
-            options: {
-                reporter: 'Spec',
-                run: false
+            all: {
+                options: {
+                    run: false,
+                    reporter: 'Spec',
+                    urls: ['http://localhost:<%= connect.options.port %>/test/index.html']
+                }
             }
-            // all: {
-            //     options: {
-            //         run: true,
-            //         urls: ['http://localhost:<%= connect.options.port %>/index.html']
-            //     }
-            // }
         },
         coffee: {
             dist: {
@@ -328,7 +324,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('server', function (target) {
         if (target === 'dist') {
-            return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
+            return grunt.task.run(['build', /*'open',*/ 'connect:dist:keepalive']);
         }
 
         grunt.task.run([

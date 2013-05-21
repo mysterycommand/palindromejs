@@ -11,14 +11,18 @@
 
 require.config({
 
-    baseUrl: 'scripts/',
+    // Run everything relative to tha app/scripts directory.
+    baseUrl: '../../app/scripts/',
 
     deps: [
+        // Require in app/scripts/config to get the application & it's dependencies.
         '../../app/scripts/config',
-        'spec/test'
+        // Require in test/scripts/main to start the mocha runner.
+        '../../test/scripts/main'
     ],
 
     paths: {
+        // Point spec and test/spec.
         spec: '../../test/spec'
     }
 
