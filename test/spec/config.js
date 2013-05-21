@@ -14,16 +14,18 @@ require.config({
     // Run everything relative to tha app/scripts directory.
     baseUrl: '../../app/scripts/',
 
-    deps: [
-        // Require in app/scripts/config to get the application & it's dependencies.
-        '../../app/scripts/config',
-        // Require in test/scripts/main to start the mocha runner.
-        '../../test/scripts/main'
-    ],
-
     paths: {
         // Point spec and test/spec.
-        spec: '../../test/spec'
+        spec: '../../test/spec',
+        runner: '../../test/spec/runner',
+        appConfig: '../../app/scripts/config'
+    },
+
+    // Require in test/spec/runner to start the mocha runner.
+    deps: ['runner'],
+    shim: {
+        // Require in app/scripts/config to get the application & it's dependencies.
+        runner: ['appConfig']
     }
 
 });
