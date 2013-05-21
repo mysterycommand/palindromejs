@@ -119,21 +119,25 @@ module.exports = function (grunt) {
             ]
         },
         mocha: {
-            all: {
-                options: {
-                    run: true,
-                    urls: ['http://localhost:<%= connect.options.port %>/index.html']
-                }
-            }
-        },
-        mocha_phantomjs: {
+            all: ['test/{,**/}*.html'],
             options: {
-                reporter: 'spec'
-            },
-            all: [
-                'test/{,**/}*.html'
-            ]
+                reporter: 'Spec'
+            }
+            // all: {
+            //     options: {
+            //         run: true,
+            //         urls: ['http://localhost:<%= connect.options.port %>/index.html']
+            //     }
+            // }
         },
+        // mocha_phantomjs: {
+        //     options: {
+        //         reporter: 'spec'
+        //     },
+        //     all: [
+        //         'test/{,**/}*.html'
+        //     ]
+        // },
         coffee: {
             dist: {
                 files: [{
@@ -347,8 +351,8 @@ module.exports = function (grunt) {
         'clean:server',
         'concurrent:test',
         'connect:test',
-        // 'mocha',
-        'mocha_phantomjs'
+        'mocha'
+        // 'mocha_phantomjs'
     ]);
 
     grunt.registerTask('build', [

@@ -37,36 +37,31 @@
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <link rel="stylesheet" href="../.tmp/styles/main.css">
+
         <link rel="stylesheet" href="../app/bower_components/mocha/mocha.css">
+        <script src="../app/bower_components/mocha/mocha.js"></script>
+        <script src="../app/bower_components/chai/chai.js"></script>
 
         <script src="../app/bower_components/modernizr/modernizr.js"></script>
     </head>
     <body>
-        <div class="container">
-        </div>
-
+        <div class="container"></div>
         <div id="mocha"></div>
-
-        <script src="../app/bower_components/mocha/mocha.js"></script>
-        <script>
-            mocha.setup(
-                {
-                    ui: 'bdd',
-                    globals: [],
-                    reporter: 'html'
-                }
-            );
-        </script>
-
-        <script src="../app/bower_components/chai/chai.js"></script>
-        <script>
-            var should = chai.should();
-        </script>
 
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
 
+        <script>
+            mocha.setup(
+                {
+                    ui: 'bdd',
+                    reporter: 'html',
+                    ignoreLeaks: true
+                }
+            );
+            var should = chai.should();
+        </script>
         <script data-main="scripts/config" src="../app/bower_components/requirejs/require.js"></script>
     </body>
 </html>

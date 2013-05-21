@@ -16,7 +16,13 @@ define([
 
     'use strict';
 
-    return (window.mochaPhantomJS) ? window.mochaPhantomJS.run() : window.mocha.run();
+    // Protect from barfs
+    window.console = window.console || function() {};
+
+    // Don't track
+    window.notrack = true;
+
+    window.mocha.run();
 
 });
 /* ================================================================================================================== */
