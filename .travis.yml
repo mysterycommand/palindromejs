@@ -32,7 +32,7 @@ env:
 
 before_script:
     # install dependencies
-    - npm install -g grunt-cli bower
+    - npm install -g grunt-cli bower compass
 script:
     # We want to gate on passing tests and a successful build
     - bower install
