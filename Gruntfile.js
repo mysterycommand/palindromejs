@@ -121,7 +121,8 @@ module.exports = function (grunt) {
         mocha: {
             all: ['test/{,**/}*.html'],
             options: {
-                reporter: 'Spec'
+                reporter: 'Spec',
+                run: false
             }
             // all: {
             //     options: {
@@ -130,14 +131,6 @@ module.exports = function (grunt) {
             //     }
             // }
         },
-        // mocha_phantomjs: {
-        //     options: {
-        //         reporter: 'spec'
-        //     },
-        //     all: [
-        //         'test/{,**/}*.html'
-        //     ]
-        // },
         coffee: {
             dist: {
                 files: [{
@@ -210,7 +203,8 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     src: [
-                        '<%= yeoman.dist %>/scripts/{,*/}*.js',
+                        '<%= yeoman.dist %>/scripts/*.js',
+                        '<%= yeoman.dist %>/scripts/vendor/*.js',
                         '<%= yeoman.dist %>/styles/{,*/}*.css',
                         '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp}',
                         '<%= yeoman.dist %>/styles/fonts/*'
@@ -294,6 +288,7 @@ module.exports = function (grunt) {
                         '*.{ico,txt}',
                         '.htaccess',
                         'images/{,*/}*.{webp,gif}',
+                        'scripts/library/cleanup.js',
                         'styles/fonts/*'
                     ]
                 }, {
@@ -352,7 +347,6 @@ module.exports = function (grunt) {
         'concurrent:test',
         'connect:test',
         'mocha'
-        // 'mocha_phantomjs'
     ]);
 
     grunt.registerTask('build', [
