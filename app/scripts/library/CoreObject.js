@@ -111,7 +111,8 @@ define([
             Child = function Child() { throw new Error('Static-only, constructor-less objects should not be instantiated?'); };
         }
 
-        Child.prototype = Object.create((Parent ? Parent.prototype : null), propertiesObject);
+        // ALLOW null?
+        Child.prototype = Object.create(Parent.prototype, propertiesObject);
         Object.defineProperties(Child, staticPropertiesObject);
         return Child;
     };
@@ -120,7 +121,7 @@ define([
     // static === applied to Child (not Child.prototype)
     // const === configurable: false, writable: false (or set throws an error)
 
-    var CoreObject = extend(null, {
+    var CoreObject = extend(Object, {
         extend: {
             static: true,
             const: true,
