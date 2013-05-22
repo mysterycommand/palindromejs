@@ -10,11 +10,13 @@
 require([
 
     'jquery',
+    'lodash',
     'App'
 
 ], function (
 
     $,
+    _,
     App
 
 ) {

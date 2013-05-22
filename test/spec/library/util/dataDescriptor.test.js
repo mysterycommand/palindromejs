@@ -8,25 +8,21 @@
 /** ================================================================================================================ **/
 define([
 
-    'spec/library/util/override.test',
-    'spec/library/util/accessorDescriptor.test',
-    'spec/library/util/dataDescriptor.test',
-    'spec/library/util/extend.test',
-    'spec/library/CoreObject.test'
+    'library/util/dataDescriptor'
 
 ], function (
+
+    dataDescriptor
 
 ) {
 
     'use strict';
 
-    // Protect from barfs
-    window.console = window.console || function() {};
-
-    // Don't track
-    window.notrack = true;
-
-    window.mocha.run();
+    describe('dataDescriptor', function () {
+        it('should exist', function() {
+            should.exist(dataDescriptor);
+        });
+    });
 
 });
 /* ================================================================================================================== */

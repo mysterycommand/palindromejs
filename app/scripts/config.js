@@ -7,19 +7,6 @@
  */
 /* ================================================================================================================== */
 
-// require.config({
-//     paths: {
-//         jquery: '../bower_components/jquery/jquery',
-//         bootstrap: 'vendor/bootstrap'
-//     },
-//     shim: {
-//         bootstrap: {
-//             deps: ['jquery'],
-//             exports: 'jquery'
-//         }
-//     }
-// });
-
 'use strict';
 
 require.config({
@@ -27,14 +14,21 @@ require.config({
     deps: ['main'],
 
     paths: {
-        jquery: '../bower_components/jquery/jquery'
+        jquery: '../bower_components/jquery/jquery',
+        lodash: '../bower_components/lodash/lodash'
     },
 
     shim: {
         jquery: {
             exports: '$',
             init: function() {
-                return this.jQuery.noConflict();
+                return this.$.noConflict();
+            }
+        },
+        lodash: {
+            exports: '_',
+            init: function() {
+                return this._.noConflict();
             }
         }
     }
