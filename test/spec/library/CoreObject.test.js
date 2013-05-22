@@ -22,8 +22,13 @@ define([
         it('should exist', function() {
             should.exist(CoreObject);
         });
-        it('should create an instance of CoreObject', function() {
+        it('should create instances with new', function() {
             (new CoreObject()).should.be.an.instanceof(CoreObject);
+        });
+        describe('#create', function() {
+            it('should create new instances', function () {
+                (CoreObject.create()).should.be.an.instanceof(CoreObject);
+            });
         });
     });
 
