@@ -60,6 +60,12 @@ define([
         var property;
         var descriptor;
 
+        var isArray;
+        var isBoolean;
+        var isFunction;
+        var isNumber;
+        var isString;
+
         var isGetter;
         var isSetter;
 
@@ -77,29 +83,47 @@ define([
             if (key === 'constructor') { return; }
 
             property = properties[key];
-            isGetter = property.hasOwnProperty('get');
-            isSetter = property.hasOwnProperty('set');
 
-            // isReadOnly = isGetter && ! isSetter;
-            // isWriteOnly = ! isGetter && isSetter;
+            isArray = Array.isArray(property);
+            isBoolean = typeof property === 'boolean';
+            isFunction = typeof property === 'function';
+            isNumber = typeof property === 'number';
+            isString = typeof property === 'string';
 
-            isAccessor = isGetter || isSetter;
-            isData = property.hasOwnProperty('value');
-
-            isPrivate = property.hasOwnProperty('private');
-            isStatic = property.hasOwnProperty('static');
-            isConst = property.hasOwnProperty('const');
-
-            if ( ! (isAccessor || isData)) { throw new Error('Property descriptors must have at least one property named get, set, or value.'); }
-            if (isAccessor && isData) { throw new Error('Mixed type property descirptor, get and set are incompatible with value.'); }
-            if (isConst && isSetter) { throw new Error('Constants must not have a set method.'); }
-
-            if (isAccessor) {
-                // handle accessor descriptor
-                descriptor = accessorDescriptor(property, isPrivate, isConst);
+            if (isString || isNumber || isBoolean || isArray) {
+                // shortcut for creating 'public' data descriptors from
+                // arrays, booleans, functions, numbers, and strings
+                descriptor = dataDescriptor({value: property}, false, false);
             } else {
-                // handle data descriptor
-                descriptor = dataDescriptor(property, isPrivate, isConst);
+                isGetter = property.hasOwnProperty('get');
+                isSetter = property.hasOwnProperty('set');
+
+                // isReadOnly = isGetter && ! isSetter;
+                // isWriteOnly = ! isGetter && isSetter;
+
+                isAccessor = isGetter || isSetter;
+                isData = property.hasOwnProperty('value');
+
+                if ( ! (isAccessor || isData)) {
+                    // allow for creating data descriptors from 'plain' objects
+                    descriptor = dataDescriptor({value: property}, false, false);
+                } else {
+                    // create a descriptor from a property object with 'sugar syntax' flags
+                    isPrivate = property.hasOwnProperty('private');
+                    isStatic = property.hasOwnProperty('static');
+                    isConst = property.hasOwnProperty('const');
+
+                    if (isAccessor && isData) { throw new Error('Mixed type property, get and set are incompatible with value.'); }
+                    if (isConst && isSetter) { throw new Error('Constants must not have a set method.'); }
+
+                    if (isAccessor) {
+                        // handle accessor descriptor
+                        descriptor = accessorDescriptor(property, isPrivate, isConst);
+                    } else {
+                        // handle data descriptor
+                        descriptor = dataDescriptor(property, isPrivate, isConst);
+                    }
+                }
             }
 
             if (isStatic) {

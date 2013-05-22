@@ -34,7 +34,13 @@ define([
      * @see  https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Object/defineProperty
      */
     return function dataDescriptor(property, isPrivate, isConst) {
+        var isGetter = property.hasOwnProperty('get');
+        var isSetter = property.hasOwnProperty('set');
         var isData = property.hasOwnProperty('value');
+
+        if (isSetter || isGetter) {
+            throw new Error('Data descriptors are incompatible with own properties \'get\' or \'set\'.');
+        }
 
         if ( ! isData) {
             throw new Error('Data descriptors must have at least one own property \'data\'.');

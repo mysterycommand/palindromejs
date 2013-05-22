@@ -37,12 +37,17 @@ define([
     return function accessorDescriptor(property, isPrivate, isConst) {
         var isGetter = property.hasOwnProperty('get');
         var isSetter = property.hasOwnProperty('set');
+        var isData = property.hasOwnProperty('value');
 
         if ( ! (isSetter || isGetter)) {
             throw new Error('Accessor descriptors must have at least one own property \'get\' or \'set\'.');
         }
 
-        if ((isSetter && property.set) && isConst) {
+        if (isData) {
+            throw new Error('Accessor descriptors are incompatible with own property \'value\'');
+        }
+
+        if (isSetter && isConst) {
             throw new Error('Constant accessors must be read only. They cannot have a set method.');
         }
 
