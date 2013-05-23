@@ -90,10 +90,14 @@ define([
             isNumber = typeof property === 'number';
             isString = typeof property === 'string';
 
+            isPrivate = false;
+            isStatic = false;
+            isConst = false;
+
             if (isString || isNumber || isBoolean || isArray) {
                 // shortcut for creating 'public' data descriptors from
                 // arrays, booleans, functions, numbers, and strings
-                descriptor = dataDescriptor({value: property}, false, false);
+                descriptor = dataDescriptor({value: property}, isPrivate, isConst);
             } else {
                 isGetter = property.hasOwnProperty('get');
                 isSetter = property.hasOwnProperty('set');
@@ -106,7 +110,7 @@ define([
 
                 if ( ! (isAccessor || isData)) {
                     // allow for creating data descriptors from 'plain' objects
-                    descriptor = dataDescriptor({value: property}, false, false);
+                    descriptor = dataDescriptor({value: property}, isPrivate, isConst);
                 } else {
                     // create a descriptor from a property object with 'sugar syntax' flags
                     isPrivate = property.hasOwnProperty('private');
@@ -135,10 +139,8 @@ define([
 
         if (properties.hasOwnProperty('constructor')) {
             Child = properties.constructor;
-        } else if (Object.keys(propertiesObject).length > 0) {
-            Child = function Child() {};
         } else {
-            Child = function Child() { throw new Error('Static-only, constructor-less objects should not be instantiated?'); };
+            Child = function Child() {};
         }
 
         var proto = null;
@@ -146,6 +148,8 @@ define([
 
         Child.prototype = Object.create(proto, propertiesObject);
         Object.defineProperties(Child, staticPropertiesObject);
+        Child.prototype.constructor = Child;
+
         return Child;
     };
 

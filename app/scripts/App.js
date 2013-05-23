@@ -9,15 +9,21 @@
 
 define([
 
+    'library/CoreObject'
+
 ], function (
+
+    CoreObject
 
 ) {
 
     'use strict';
 
-    var App = function() {
-        console.log('App#constructor');
-    };
+    var App = CoreObject.extend({
+        constructor: function App() {
+            CoreObject.prototype.constructor.call(this);
+        }
+    });
 
     return App;
 

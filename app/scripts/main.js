@@ -23,8 +23,8 @@ require([
 
     'use strict';
 
-    console.log('main');
-    var app = new App();
+    var app = App.create();
+    console.log(app.toString());
 
 });
 
