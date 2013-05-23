@@ -80,8 +80,6 @@ define([
         var isConst;
 
         Object.keys(properties).forEach(function(key) {
-            if (key === 'constructor') { return; }
-
             property = properties[key];
 
             isArray = Array.isArray(property);
@@ -140,7 +138,9 @@ define([
         if (properties.hasOwnProperty('constructor')) {
             Child = properties.constructor;
         } else {
-            Child = function Child() {};
+            Child = function Child() {
+                Parent.apply(this, arguments);
+            };
         }
 
         var proto = null;
@@ -148,7 +148,6 @@ define([
 
         Child.prototype = Object.create(proto, propertiesObject);
         Object.defineProperties(Child, staticPropertiesObject);
-        Child.prototype.constructor = Child;
 
         return Child;
     };

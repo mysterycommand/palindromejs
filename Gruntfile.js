@@ -83,7 +83,11 @@ module.exports = function (grunt) {
                 options: {
                     middleware: function (connect) {
                         return [
-                            mountFolder(connect, yeomanConfig.dist)
+                            // mountFolder(connect, yeomanConfig.dist)
+                            mountFolder(connect, '.tmp'),
+                            mountFolder(connect, yeomanConfig.dist),
+                            mountFolder(connect, '.'),
+                            lrSnippet
                         ];
                     }
                 }
