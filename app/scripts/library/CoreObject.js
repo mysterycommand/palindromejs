@@ -7,7 +7,7 @@
  */
 /** ================================================================================================================ **/
 
-/* jshint newcap: false */
+/* jshint newcap: false, boss: true */
 
 define([
 
@@ -26,7 +26,6 @@ define([
             static: true,
             value: function(props) {
                 // console.log(this.toString().match(/function\s*(\w+)/)[1] + '#extend', arguments);
-
                 var Child = extend(this, props);
                 Child.initNumInstances();
                 return Child;
@@ -36,10 +35,6 @@ define([
             static: true,
             value: function() {
                 // console.log(this.toString().match(/function\s*(\w+)/)[1] + '#create', arguments);
-
-                // var This = this;
-                // This.incNumInstances();
-                // var instance = new This(arguments);
                 this.incNumInstances();
                 var instance = new this(arguments);
                 var name = instance.instanceName;
@@ -50,9 +45,6 @@ define([
             static: true,
             value: function() {
                 // console.log(this.toString().match(/function\s*(\w+)/)[1] + '#initNumInstances', arguments);
-
-                // var This = this;
-                // Object.defineProperty(This, '_numInstances', {
                 Object.defineProperty(this, '_numInstances', {
                     configurable: false,
                     enumerable: false,
@@ -65,9 +57,6 @@ define([
             static: true,
             get: function() {
                 // console.log(this.toString().match(/function\s*(\w+)/)[1] + '#numInstances', arguments);
-
-                // var This = this;
-                // return This._numInstances || (This._numInstances = 0);
                 return this._numInstances;
             }
         },
@@ -75,9 +64,6 @@ define([
             static: true,
             value: function() {
                 // console.log(this.toString().match(/function\s*(\w+)/)[1] + '#incNumInstances', arguments);
-
-                // var This = this;
-                // This._numInstances = This.numInstances + 1;
                 this._numInstances = this.numInstances + 1;
             }
         },
@@ -85,9 +71,6 @@ define([
             static: true,
             value: function() {
                 // console.log(this.toString().match(/function\s*(\w+)/)[1] + '#decNumInstances', arguments);
-
-                // var This = this;
-                // This._numInstances = This.numInstances - 1;
                 this._numInstances = this.numInstances - 1;
             }
         },
@@ -96,9 +79,6 @@ define([
         },
         destroy: function() {
             // console.log(this.toString().match(/function\s*(\w+)/)[1] + '#destroy', arguments);
-
-            // var This = this.constructor;
-            // This.decNumInstances();
             this.constructor.decNumInstances();
             return this;
         },
@@ -106,40 +86,28 @@ define([
             get: function() {
                 // console.log(this.constructorName + '#typeName');
                 if (this._type) { return this._type; }
-
-                this._type = typeof this;
-                return this._type;
+                return this._type = typeof this;
             }
         },
         constructorName: {
             get: function() {
                 // console.log(this.constructorName + '#constructorName');
                 if (this._name) { return this._name; }
-
-                // var This = this.constructor;
-                // This.toString().match(/function\s*(\w+)/)[1];
-                this._ctor = this.constructor.toString().match(/function\s*(\w+)/)[1];
-                return this._ctor;
+                return this._ctor = this.constructor.toString().match(/function\s*(\w+)/)[1];
             }
         },
         instanceName: {
             get: function() {
                 // console.log(this.constructorName + '#instanceName');
                 if (this._name) { return this._name; }
-
-                var ctor = this.constructorName;
-                this._name = ctor.substring(0, 1).toLowerCase() + ctor.substring(1) + this.instanceIndex;
-
-                return this._name;
+                return this._name = this.constructorName.substring(0, 1).toLowerCase() + this.constructorName.substring(1) + this.instanceIndex;
             }
         },
         instanceIndex: {
             get: function() {
                 // console.log(this.constructorName + '#instanceIndex');
                 if (this._instanceIndex) { return this._instanceIndex; }
-
-                this._instanceIndex = this.constructor.numInstances - 1; // numInstances is like Array.length
-                return this._instanceIndex;
+                return this._instanceIndex = this.constructor.numInstances - 1; // numInstances is like Array.length
             }
         },
         toString: function() {
