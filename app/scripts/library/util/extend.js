@@ -95,6 +95,9 @@ define([
             if (isString || isNumber || isBoolean || isArray) {
                 // shortcut for creating 'public' data descriptors from
                 // arrays, booleans, functions, numbers, and strings
+                //
+                // BE CAREFUL THOUGH these will be created on the prototype,
+                // and therefore will be shared amongst all instances!
                 descriptor = dataDescriptor({value: property}, isPrivate, isConst);
             } else {
                 isGetter = property.hasOwnProperty('get');
@@ -108,6 +111,9 @@ define([
 
                 if ( ! (isAccessor || isData)) {
                     // allow for creating data descriptors from 'plain' objects
+                    //
+                    // BE CAREFUL THOUGH these will be created on the prototype,
+                    // and therefore will be shared amongst all instances!
                     descriptor = dataDescriptor({value: property}, isPrivate, isConst);
                 } else {
                     // create a descriptor from a property object with 'sugar syntax' flags
@@ -132,6 +138,15 @@ define([
                 staticPropertiesObject[key] = descriptor;
             } else {
                 propertiesObject[key] = descriptor;
+            }
+        });
+
+        // copy Parent's 'static' and 'configurable' properties
+        // (neither 'private's nor 'const's) onto Child as well
+        Object.keys(Parent).forEach(function(key) {
+            descriptor = Object.getOwnPropertyDescriptor(Parent, key);
+            if (descriptor.configurable) {
+                staticPropertiesObject[key] = descriptor;
             }
         });
 
