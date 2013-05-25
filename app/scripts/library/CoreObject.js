@@ -7,6 +7,8 @@
  */
 /** ================================================================================================================ **/
 
+/* jshint newcap: false */
+
 define([
 
     'library/util/extend'
@@ -35,9 +37,11 @@ define([
             value: function() {
                 // console.log(this.toString().match(/function\s*(\w+)/)[1] + '#create', arguments);
 
-                var This = this;
-                This.incNumInstances();
-                var instance = new This(arguments);
+                // var This = this;
+                // This.incNumInstances();
+                // var instance = new This(arguments);
+                this.incNumInstances();
+                var instance = new this(arguments);
                 var name = instance.instanceName;
                 return instance;
             }
@@ -47,6 +51,8 @@ define([
             value: function() {
                 // console.log(this.toString().match(/function\s*(\w+)/)[1] + '#initNumInstances', arguments);
 
+                // var This = this;
+                // Object.defineProperty(This, '_numInstances', {
                 Object.defineProperty(this, '_numInstances', {
                     configurable: false,
                     enumerable: false,
@@ -75,11 +81,30 @@ define([
                 this._numInstances = this.numInstances + 1;
             }
         },
+        decNumInstances: {
+            static: true,
+            value: function() {
+                // console.log(this.toString().match(/function\s*(\w+)/)[1] + '#decNumInstances', arguments);
+
+                // var This = this;
+                // This._numInstances = This.numInstances - 1;
+                this._numInstances = this.numInstances - 1;
+            }
+        },
         constructor: function CoreObject() {
             // console.log('CoreObject#constructor');
         },
+        destroy: function() {
+            // console.log(this.toString().match(/function\s*(\w+)/)[1] + '#destroy', arguments);
+
+            // var This = this.constructor;
+            // This.decNumInstances();
+            this.constructor.decNumInstances();
+            return this;
+        },
         typeName: {
             get: function() {
+                // console.log(this.constructorName + '#typeName');
                 if (this._type) { return this._type; }
 
                 this._type = typeof this;
@@ -88,32 +113,37 @@ define([
         },
         constructorName: {
             get: function() {
+                // console.log(this.constructorName + '#constructorName');
                 if (this._name) { return this._name; }
 
+                // var This = this.constructor;
+                // This.toString().match(/function\s*(\w+)/)[1];
                 this._ctor = this.constructor.toString().match(/function\s*(\w+)/)[1];
                 return this._ctor;
             }
         },
         instanceName: {
             get: function() {
+                // console.log(this.constructorName + '#instanceName');
                 if (this._name) { return this._name; }
 
-                this.uniqueId = this.constructor.numInstances - 1; // numInstances is like Array.length
-
                 var ctor = this.constructorName;
-                this._name = ctor.substring(0, 1).toLowerCase() + ctor.substring(1) + this.uniqueId;
+                this._name = ctor.substring(0, 1).toLowerCase() + ctor.substring(1) + this.instanceIndex;
 
                 return this._name;
             }
         },
-        uniqueId: {
+        instanceIndex: {
             get: function() {
-                if (this._name) { return this._name; }
-                return this._uniqueId;
+                // console.log(this.constructorName + '#instanceIndex');
+                if (this._instanceIndex) { return this._instanceIndex; }
+
+                this._instanceIndex = this.constructor.numInstances - 1; // numInstances is like Array.length
+                return this._instanceIndex;
             }
         },
         toString: function() {
-            // console.log('CoreObject#toString');
+            // console.log(this.constructorName + '#toString');
             return '[' + this.typeName + ' ' + this.constructorName + ']';
         }
     });
