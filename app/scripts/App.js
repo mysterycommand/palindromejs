@@ -21,17 +21,10 @@ define([
 
     var App = CoreObject.extend({
         constructor: function App() {
+            // console.log(this.constructorName + '#constructor', arguments);
+            // CoreObject.call(this);
         }
     });
-
-    // var test1 = CoreObject.create();
-    // var test2 = CoreObject.create();
-    // var test3 = CoreObject.create();
-    // var test4 = CoreObject.create();
-    // var app = App.create();
-
-    console.log('CoreObject.numInstances', CoreObject.numInstances);
-    console.log('App.numInstances', App.numInstances);
 
     return App;
 

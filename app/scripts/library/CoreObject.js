@@ -36,9 +36,15 @@ define([
             value: function() {
                 // console.log(this.toString().match(/function\s*(\w+)/)[1] + '#create', arguments);
                 this.incNumInstances();
-                var instance = new this(arguments);
-                var name = instance.instanceName;
-                return instance;
+                var inst = new this(arguments);
+
+                // It would be cool if I could figure out a way to enforce using Constructor.create();
+                // var Ctor = function() {};
+                // Ctor.prototype = Object.create(this.prototype);
+                // var inst = this.apply(new Ctor(), arguments);
+
+                var name = inst.instanceName;
+                return inst;
             }
         },
         initNumInstances: {
@@ -75,14 +81,27 @@ define([
             }
         },
         constructor: function CoreObject() {
-            // console.log('CoreObject#constructor');
+            // console.log(this.constructorName + '#constructor', arguments);
         },
         destroy: function() {
-            // console.log(this.toString().match(/function\s*(\w+)/)[1] + '#destroy', arguments);
+            // console.log(this.constructorName + '#destroy', arguments);
             this.constructor.decNumInstances();
-            return this;
+            return null;
+        },
+        can: function(key) {
+            // console.log(this.constructorName + '#can', arguments);
+            return typeof this[key] === 'function';
+        },
+        has: function(key) {
+            // console.log(this.constructorName + '#has', arguments);
+            return this.hasOwnProperty(key);
+        },
+        toString: function() {
+            // console.log(this.constructorName + '#toString');
+            return '[' + this.typeName + ' ' + this.constructorName + ']';
         },
         typeName: {
+            private: true,
             get: function() {
                 // console.log(this.constructorName + '#typeName');
                 if (this._type) { return this._type; }
@@ -90,13 +109,15 @@ define([
             }
         },
         constructorName: {
+            private: true,
             get: function() {
                 // console.log(this.constructorName + '#constructorName');
-                if (this._name) { return this._name; }
+                if (this._ctor) { return this._ctor; }
                 return this._ctor = this.constructor.toString().match(/function\s*(\w+)/)[1];
             }
         },
         instanceName: {
+            private: true,
             get: function() {
                 // console.log(this.constructorName + '#instanceName');
                 if (this._name) { return this._name; }
@@ -104,15 +125,12 @@ define([
             }
         },
         instanceIndex: {
+            private: true,
             get: function() {
                 // console.log(this.constructorName + '#instanceIndex');
                 if (this._instanceIndex) { return this._instanceIndex; }
                 return this._instanceIndex = this.constructor.numInstances - 1; // numInstances is like Array.length
             }
-        },
-        toString: function() {
-            // console.log(this.constructorName + '#toString');
-            return '[' + this.typeName + ' ' + this.constructorName + ']';
         }
     });
 
