@@ -43,17 +43,17 @@ define([
             throw new Error('Accessor descriptors must have at least one own property \'get\' or \'set\'.');
         }
 
-        if (isData) {
-            throw new Error('Accessor descriptors are incompatible with own property \'value\'');
-        }
-
         if (isSetter && isConst) {
             throw new Error('Constant accessors must be read only. They cannot have a set method.');
         }
 
+        if (isData) {
+            throw new Error('Accessor descriptors are incompatible with own property \'value\'');
+        }
+
         var descriptor = {
             configurable: ( ! (isPrivate || isConst)),
-            enumerable: (! isPrivate)
+            enumerable: ( ! isPrivate)
         };
 
         // If property has one of these keys set, we're going to override it on the descriptor we just created.

@@ -66,7 +66,17 @@ define([
                     accessorDescriptor(prop, false, true);
                 }).should.throw(Error);
             });
-            it('if either \'get\' or \'set\' or both exist, and \'value\' exists', function () {
+            it('if neither \'get\' nor \'set\' exists', function () {
+                var noGetSet = {};
+
+                (function() {
+                    accessorDescriptor(noGetSet, false, false);
+                }).should.throw(Error);
+            });
+            it('if \'value\' exists', function () {
+                var badData = {
+                    value: null
+                };
                 var badGetter = {
                     get: function() { return null; },
                     value: null
@@ -81,6 +91,9 @@ define([
                     value: null
                 };
 
+                (function() {
+                    accessorDescriptor(badData, false, false);
+                }).should.throw(Error);
                 (function() {
                     accessorDescriptor(badGetter, false, false);
                 }).should.throw(Error);

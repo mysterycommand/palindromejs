@@ -10,24 +10,20 @@
 require([
 
     'jquery',
-    'lodash',
-    'library/CoreObject',
-    'App'
+    'lodash'
 
 ], function (
 
     $,
-    _,
-    CoreObject,
-    App
+    _
 
 ) {
 
     'use strict';
 
-    var app = App.create();
-    console.log(app.toString());
-
+    // var target = {};
+    // Object.defineProperty(target, 'something', {enumerable: true, configurable: true});
+    // console.log(Object.getOwnPropertyDescriptor(target, 'something'));
 });
 
 /* ================================================================================================================== */

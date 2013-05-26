@@ -36,6 +36,13 @@ define([
             });
         });
         describe('should throw an error', function () {
+            it('if value is not present', function () {
+                var noValue = {};
+
+                (function() {
+                    dataDescriptor(noValue, false, false);
+                }).should.throw(Error);
+            });
             it('if either \'get\' or \'set\' or both exist', function () {
                 var badGetter = {
                     get: function() { return null; },

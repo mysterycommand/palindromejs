@@ -43,12 +43,12 @@ define([
         }
 
         if ( ! isData) {
-            throw new Error('Data descriptors must have at least one own property \'data\'.');
+            throw new Error('Data descriptors must have at least one own property \'value\'.');
         }
 
         var descriptor = {
             configurable: ( ! (isPrivate || isConst)),
-            enumerable: (! isPrivate),
+            enumerable: ( ! isPrivate),
             writable: ( ! isConst)
         };
 

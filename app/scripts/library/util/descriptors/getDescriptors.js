@@ -9,13 +9,26 @@
 
 define([
 
+    'library/util/descriptors/isDescriptor'
+
 ], function (
+
+    isDescriptor
 
 ) {
 
     'use strict';
 
-    return {};
+    return function getDescriptors(obj) {
+        var descriptors = {};
+
+        Object.keys(obj).forEach(function(key) {
+            if (isDescriptor(obj[key])) { descriptors[key] = obj[key]; }
+            else { descriptors[key] = Object.getOwnPropertyDescriptor(obj, key); }
+        });
+
+        return descriptors;
+    };
 
 });
 

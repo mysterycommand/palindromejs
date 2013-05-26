@@ -15,7 +15,13 @@ define([
 
     'use strict';
 
-    return {};
+    // console.log('isConfigurable', isConfigurable({configurable: true}));
+    // console.log('isConfigurable', isConfigurable({configurable: false}));
+    // console.log('isConfigurable', isConfigurable({}));
+
+    return function isConfigurable(obj) {
+        return obj.hasOwnProperty('configurable') && obj.configurable;
+    };
 
 });
 

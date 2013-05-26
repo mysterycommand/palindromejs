@@ -8,9 +8,8 @@
 /** ================================================================================================================ **/
 define([
 
-    'spec/library/util/override.test',
-    'spec/library/util/accessorDescriptor.test',
-    'spec/library/util/dataDescriptor.test',
+    'spec/library/util/assign.test',
+    'spec/library/util/descriptors/assignDescriptors.test',
     'spec/library/util/extend.test',
     'spec/library/CoreObject.test'
 

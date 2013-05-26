@@ -15,7 +15,7 @@ define([
 
     'use strict';
 
-    return {};
+    return Array.prototype.slice;
 
 });
 

@@ -15,7 +15,12 @@ define([
 
     'use strict';
 
-    return {};
+    var hash = {};
+
+    return function unique(key) {
+        if (typeof hash[key] === 'undefined') { hash[key] = -1; }
+        return '' + (++hash[key]);
+    };
 
 });
 
