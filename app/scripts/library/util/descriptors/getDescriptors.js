@@ -9,10 +9,12 @@
 
 define([
 
+    'library/util/descriptors/ensureDescriptor',
     'library/util/descriptors/isDescriptor'
 
 ], function (
 
+    ensureDescriptor,
     isDescriptor
 
 ) {
@@ -23,7 +25,7 @@ define([
         var descriptors = {};
 
         Object.keys(obj).forEach(function(key) {
-            if (isDescriptor(obj[key])) { descriptors[key] = obj[key]; }
+            if (isDescriptor(obj[key])) { descriptors[key] = ensureDescriptor(obj[key]); }
             else { descriptors[key] = Object.getOwnPropertyDescriptor(obj, key); }
         });
 

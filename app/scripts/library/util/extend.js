@@ -39,7 +39,7 @@ define([
         }
 
         Child.prototype = Object.create((Parent && Parent.prototype), getDescriptors(protoProps));
-        return assignDescriptors(Child, Parent, staticProps);
+        return Object.defineProperties(Child, assignDescriptors(Parent, staticProps));
     };
 
 });

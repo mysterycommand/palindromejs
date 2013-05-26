@@ -33,7 +33,7 @@ define([
             var source1 = {one: true};
             var source2 = {two: true};
             var source3 = {three: true};
-            assignDescriptors(target, source1, source2, source3);
+            Object.defineProperties(target, assignDescriptors(source1, source2, source3));
 
             (target).should.have.a.property('one', true);
             (target).should.have.a.property('two', true);
@@ -44,18 +44,17 @@ define([
             var source1 = {one: true};
             var source2 = {two: true};
             var source3 = {three: true};
-            assignDescriptors(target, source1, source2, source3);
 
-            (assignDescriptors(target, source1)).should.have.a.property('one', true);
-            (assignDescriptors(target, source1, source2)).should.have.a.property('one', true);
-            (assignDescriptors(target, source1, source2)).should.have.a.property('two', true);
+            (Object.defineProperties(target, assignDescriptors(source1))).should.have.a.property('one', true);
+            (Object.defineProperties(target, assignDescriptors(source1, source2))).should.have.a.property('one', true);
+            (Object.defineProperties(target, assignDescriptors(source1, source2))).should.have.a.property('two', true);
         });
         it('should not affect the sources', function() {
             var target = {};
             var source1 = {one: true};
             var source2 = {two: true};
             var source3 = {three: true};
-            assignDescriptors(target, source1, source2, source3);
+            Object.defineProperties(target, assignDescriptors(source1, source2, source3));
 
             (source1).should.not.have.a.property('two');
             (source1).should.not.have.a.property('three');
@@ -69,7 +68,7 @@ define([
             var source1 = {one: true};
             var source2 = {two: true};
             var source3 = {two: false, three: true};
-            assignDescriptors(target, source1, source2, source3);
+            Object.defineProperties(target, assignDescriptors(source1, source2, source3));
 
             (target).should.have.a.property('one', true);
             (target).should.have.a.property('two', false);
@@ -82,24 +81,26 @@ define([
             var source3 = {two: 'Two', three: true};
 
             (function() {
-                assignDescriptors(target, source1, null, source3);
+                assignDescriptors(source1, null, source3);
             }).should.not.throw(TypeError);
 
             (function() {
-                assignDescriptors(target, source1, false, source3);
+                assignDescriptors(source1, false, source3);
             }).should.not.throw(TypeError);
 
             (function() {
-                assignDescriptors(target, source1, undefined, source3);
+                assignDescriptors(source1, undefined, source3);
             }).should.not.throw(TypeError);
 
             (function() {
-                assignDescriptors(target, source1, '', source3);
+                assignDescriptors(source1, '', source3);
             }).should.not.throw(TypeError);
 
             (function() {
-                assignDescriptors(target, source1, 0, source3);
+                assignDescriptors(source1, 0, source3);
             }).should.not.throw(TypeError);
+
+            Object.defineProperties(target, assignDescriptors(source1, {}, source3));
 
             (target).should.have.a.property('one', 1);
             (target).should.have.a.property('two', 'Two');
@@ -119,7 +120,7 @@ define([
                 }
             };
             var source3 = {two: false, three: true};
-            assignDescriptors(target, source1, source2, source3);
+            Object.defineProperties(target, assignDescriptors(source1, source2, source3));
 
             (target).should.have.a.property('one', true);
             (target).should.have.a.property('two', false);
@@ -138,7 +139,7 @@ define([
             var source3 = {two: 'Two', three: 3};
 
             (function() {
-                assignDescriptors(target, source1, source2, source3);
+                assignDescriptors(source1, source2, source3);
             }).should.throw(TypeError);
         });
         it('should respect property descriptors\' writable value', function () {
@@ -152,7 +153,7 @@ define([
             };
             var source3 = {three: 3};
 
-            assignDescriptors(target, source1, source2, source3);
+            Object.defineProperties(target, assignDescriptors(source1, source2, source3));
             (function() {
                 target.two = 'One';
             }).should.throw(TypeError);
@@ -170,18 +171,18 @@ define([
             };
 
             (function() {
-                assignDescriptors(target, source1, source2, source3);
+                Object.defineProperties(target, assignDescriptors(source1, source2, source3));
             }).should.not.throw(TypeError);
 
             (target).should.have.a.property('one', 1);
             (target).should.have.a.property('two', 'Two');
             (target).should.have.a.property('three', true);
         });
-        it('assignDescriptorsing to a (constructor) function should work', function () {
+        it('assigning to a (constructor) function should work', function () {
             var Ctor = function Ctor() {};
             // Ctor.prototype = Object.create(Object.prototype, {});
 
-            assignDescriptors(Ctor, Object, {
+            Object.defineProperties(Ctor, assignDescriptors(Object, {
                 one: {
                     configurable: false,
                     enumerable: true,
@@ -204,7 +205,7 @@ define([
                         return this._four || (this._four = 4);
                     }
                 }
-            });
+            }));
 
             // console.log('Object.keys(Ctor)', Object.keys(Ctor));
             (Ctor).should.have.a.property('one', 1);

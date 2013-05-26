@@ -12,32 +12,31 @@ define([
     'library/util/descriptors/isDescriptor',
     'library/util/descriptors/isConfigurable',
     'library/util/descriptors/getDescriptors',
-    'library/util/descriptors/ensureDescriptor'
+    'library/util/descriptors/ensureDescriptor',
+    'library/util/slice'
 
 ], function (
 
     isDescriptor,
     isConfigurable,
     getDescriptors,
-    ensureDescriptor
+    ensureDescriptor,
+    slice
 
 ) {
 
     'use strict';
 
-    var slice = Array.prototype.slice;
-
-    return function assignDescriptors(target) {
-        target = target || {};
-
-        var sources = slice.call(arguments, 1)
+    return function assignDescriptors() {
+        var sources = slice.call(arguments)
             .filter(function(source) {
                 return !! source; // remove falsey sources
             });
-        if (sources.length === 0) { return target; }
+        if (sources.length === 0) { return {}; }
+        if (sources.length === 1) { return getDescriptors(sources.shift()); }
 
         // the accumulated properties descriptor/definition
-        var descriptor = {};
+        var descriptor = getDescriptors(sources.shift());
         sources
             .map(function(source) {
                 // only deal with descriptor hashes
@@ -53,9 +52,8 @@ define([
                     }
                 });
             });
-        // console.log(descriptor);
 
-        return Object.defineProperties(target, descriptor);
+        return descriptor;
     };
 
 });

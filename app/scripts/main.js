@@ -10,20 +10,21 @@
 require([
 
     'jquery',
-    'lodash'
+    'lodash',
+    'App'
 
 ], function (
 
     $,
-    _
+    _,
+    App
 
 ) {
 
     'use strict';
 
-    // var target = {};
-    // Object.defineProperty(target, 'something', {enumerable: true, configurable: true});
-    // console.log(Object.getOwnPropertyDescriptor(target, 'something'));
+    var app = App.create();
+    console.log(app.toString(), app.instanceName);
 });
 
 /* ================================================================================================================== */

@@ -9,13 +9,15 @@
 
 define([
 
+    'library/util/slice'
+
 ], function (
+
+    slice
 
 ) {
 
     'use strict';
-
-    var slice = Array.prototype.slice;
 
     return function assign(target) {
         target = target || {};

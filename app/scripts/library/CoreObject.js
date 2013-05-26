@@ -13,12 +13,14 @@ define([
 
     'library/util/descriptors/assignDescriptors',
     'library/util/extend',
+    'library/util/slice',
     'library/util/unique'
 
 ], function (
 
     assignDescriptors,
     extend,
+    slice,
     unique
 
 ) {
@@ -30,12 +32,10 @@ define([
         extend: function(staticProps, protoProps) {
             return extend(this, staticProps, protoProps);
         },
-        create: function() {
-            return new this(arguments);
+        create: function(instanceProps) {
+            return new this(instanceProps);
         },
-        assign: function() {
-            return assignDescriptors.apply(null, arguments);
-        }
+        assign: assignDescriptors
         // 'private static' members
     }, {
         // 'public' accessor members
@@ -46,19 +46,31 @@ define([
                 var uniqueId = unique(ctor);
                 return {
                     instanceId: {
+                        configurable: false,
                         value: uniqueId,
                         writable: false
                     },
                     instanceName: {
+                        configurable: false,
                         value: name + uniqueId,
                         writable: false
                     }
                 };
             }
         },
-        constructor: function CoreObject() {
+        constructor: function CoreObject(instanceProps) {
             // console.log(this.constructorName + '#constructor', arguments);
-            CoreObject.assign(this, this.instanceDefaults);
+            instanceProps = assignDescriptors(this.instanceDefaults, instanceProps || {});
+            this.def(instanceProps);
+        },
+        can: function(key) {
+            return typeof this[key] === 'function';
+        },
+        has: function(key) {
+            return this.hasOwnProperty(key);
+        },
+        def: function(instanceProps) {
+            return Object.defineProperties(this, instanceProps);
         },
         // 'public' members
         toString: function() {

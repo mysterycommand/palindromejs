@@ -9,13 +9,23 @@
 
 define([
 
+    'library/CoreObject'
+
 ], function (
+
+    CoreObject
 
 ) {
 
     'use strict';
 
-    return {};
+    var App = CoreObject.extend(null, {
+        constructor: function App() {
+            CoreObject.apply(this, arguments);
+        }
+    });
+
+    return App;
 
 });
 
