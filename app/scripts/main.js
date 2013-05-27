@@ -25,6 +25,10 @@ require([
 
     var app = App.create();
     console.log(app.toString(), app.instanceName);
+
+    // var app1 = App.create();
+    // console.log(app1.toString(), app1.instanceName);
+
 });
 
 /* ================================================================================================================== */

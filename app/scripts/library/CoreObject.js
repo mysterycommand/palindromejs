@@ -47,11 +47,13 @@ define([
                 return {
                     instanceId: {
                         configurable: false,
+                        enumerable: false,
                         value: uniqueId,
                         writable: false
                     },
                     instanceName: {
                         configurable: false,
+                        enumerable: false,
                         value: name + uniqueId,
                         writable: false
                     }
@@ -60,7 +62,7 @@ define([
         },
         constructor: function CoreObject(instanceProps) {
             // console.log(this.constructorName + '#constructor', arguments);
-            instanceProps = assignDescriptors(this.instanceDefaults, instanceProps || {});
+            instanceProps = CoreObject.assign(this.instanceDefaults, instanceProps || {});
             this.def(instanceProps);
         },
         can: function(key) {
@@ -70,6 +72,7 @@ define([
             return this.hasOwnProperty(key);
         },
         def: function(instanceProps) {
+            // TODO: instanceProps is assumed to be a descriptor here, run it through getDescriptors or assign?
             return Object.defineProperties(this, instanceProps);
         },
         // 'public' members
