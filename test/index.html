@@ -13,7 +13,7 @@
         <meta name="viewport" content="width=device-width">
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-        <link rel="stylesheet" href="../.tmp/styles/main.css">
+        <link rel="stylesheet" href="../styles/main.css">
 
         <script src="../app/bower_components/modernizr/modernizr.js"></script>
 
@@ -23,7 +23,7 @@
     </head>
     <body>
         <div class="container"></div>
-        <div id="mocha"></div>
+        <div id="mocha" style="opacity: 0.85;"></div>
 
         <script>
             mocha.setup(
@@ -35,6 +35,7 @@
             );
             var should = chai.should();
         </script>
+
         <script data-main="spec/config" src="../app/bower_components/requirejs/require.js"></script>
     </body>
 </html>

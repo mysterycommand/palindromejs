@@ -74,6 +74,8 @@ module.exports = function (grunt) {
                 options: {
                     middleware: function (connect) {
                         return [
+                            mountFolder(connect, '.tmp'),
+                            // mountFolder(connect, 'test')
                             mountFolder(connect, '.')
                         ];
                     }
@@ -83,11 +85,7 @@ module.exports = function (grunt) {
                 options: {
                     middleware: function (connect) {
                         return [
-                            // mountFolder(connect, yeomanConfig.dist)
-                            mountFolder(connect, '.tmp'),
-                            mountFolder(connect, yeomanConfig.dist),
-                            mountFolder(connect, '.'),
-                            lrSnippet
+                            mountFolder(connect, yeomanConfig.dist)
                         ];
                     }
                 }
@@ -125,6 +123,8 @@ module.exports = function (grunt) {
         mocha: {
             all: {
                 options: {
+                    // run: true,
+                    // urls: ['http://localhost:<%= connect.options.port %>/index.html']
                     run: false,
                     reporter: 'Spec',
                     urls: ['http://localhost:<%= connect.options.port %>/test/index.html']
@@ -321,6 +321,7 @@ module.exports = function (grunt) {
                 exclude: ['modernizr']
             },
             all: {
+                // rjsConfig: '<%= yeoman.app %>/scripts/main.js'
                 rjsConfig: '<%= yeoman.app %>/scripts/config.js'
             }
         }
