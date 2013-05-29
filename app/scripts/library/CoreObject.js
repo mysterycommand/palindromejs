@@ -62,8 +62,7 @@ define([
         },
         constructor: function CoreObject(instanceProps) {
             // console.log(this.constructorName + '#constructor', arguments);
-            instanceProps = CoreObject.assign(this.instanceDefaults, instanceProps || {});
-            this.def(instanceProps);
+            this.define(this.instanceDefaults, instanceProps || {});
         },
         can: function(key) {
             return typeof this[key] === 'function';
@@ -71,9 +70,12 @@ define([
         has: function(key) {
             return this.hasOwnProperty(key);
         },
-        def: function(instanceProps) {
-            // TODO: instanceProps is assumed to be a descriptor here, run it through getDescriptors or assign?
-            return Object.defineProperties(this, instanceProps);
+        describe: function(key) {
+            return Object.getOwnPropertyDescriptor(this, key);
+        },
+        define: function() {
+            var definition = CoreObject.assign.apply(this, slice.call(arguments));
+            return Object.defineProperties(this, definition);
         },
         // 'public' members
         toString: function() {

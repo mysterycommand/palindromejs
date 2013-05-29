@@ -7,6 +7,8 @@
  */
 /** ================================================================================================================ **/
 
+/* jshint laxbreak: true */
+
 define([
 
     'library/CoreObject'
@@ -23,15 +25,17 @@ define([
         instanceDefaults: {
             get: function() {
                 // TODO: eww ...
-                var inherited = Object.getOwnPropertyDescriptor(CoreObject.prototype, 'instanceDefaults').get.call(this);
+                // var inherited = Object.getOwnPropertyDescriptor(CoreObject.prototype, 'instanceDefaults').get.call(this);
+                var inherited = CoreObject.prototype.describe('instanceDefaults').get.call(this);
+                // var inherited = CoreObject.describe('instanceDefaults').get.call(this);
+                // var inherited = this.super.describe('instanceDefaults').get.call(this);
                 return CoreObject.assign({
+                // return this.super.constructor.assign({
                     _elementId: {
-                        configurable: false,
                         enumerable: false,
                         value: 'js-app'
                     },
                     _element: {
-                        configurable: false,
                         enumerable: false,
                         value: null
                     }
@@ -40,14 +44,23 @@ define([
         },
         constructor: function App() {
             CoreObject.apply(this, arguments);
+            // this.super.constructor.apply(this, arguments);
         },
         elementId: {
             get: function() {
-                return this._elementId || (this._elementId = this._element.getAttribute('id'));
+                if (this._elementId) { return this._elementId; }
+                this._elementId = (this._element)
+                    ? this._element.getAttribute('id')
+                    : '';
+                return this._elementId;
             },
             set: function(value) {
-                this._element.setAttribute('id', value);
+                if (this._elementId === value) { return; }
                 this._elementId = value;
+
+                if (this._element) {
+                    this._element.setAttribute('id', this._elementId);
+                }
             }
         },
         element: {

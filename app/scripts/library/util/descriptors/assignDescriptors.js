@@ -9,18 +9,20 @@
 
 define([
 
-    'library/util/descriptors/isDescriptor',
-    'library/util/descriptors/isConfigurable',
-    'library/util/descriptors/getDescriptors',
     'library/util/descriptors/ensureDescriptor',
+    'library/util/descriptors/getDescriptors',
+    'library/util/descriptors/isConfigurable',
+    // 'library/util/descriptors/isDescriptor',
+    // 'library/util/descriptors/isWritable',
     'library/util/slice'
 
 ], function (
 
-    isDescriptor,
-    isConfigurable,
-    getDescriptors,
     ensureDescriptor,
+    getDescriptors,
+    isConfigurable,
+    // isDescriptor,
+    // isWritable,
     slice
 
 ) {
@@ -44,7 +46,7 @@ define([
             })
             .forEach(function(source) {
                 Object.keys(source).forEach(function(key) {
-                    if (descriptor.hasOwnProperty(key) && isDescriptor(descriptor[key]) && ! isConfigurable(descriptor[key])) {
+                    if (descriptor.hasOwnProperty(key) && ! isConfigurable(descriptor[key])) {
                         // don't override own & non-configurable descriptors
                         throw new TypeError('Cannot redefine property: ', key);
                     } else {

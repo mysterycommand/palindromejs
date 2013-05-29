@@ -116,7 +116,8 @@ define([
                 var Descendant = CoreObject.extend(null, {
                     instanceDefaults: {
                         get: function() {
-                            var inherited = Object.getOwnPropertyDescriptor(CoreObject.prototype, 'instanceDefaults').get.call(this);
+                            // TODO: eww ..?
+                            var inherited = this.super.describe('instanceDefaults').get.call(this);
                             return CoreObject.assign({
                                 test: 'This is a test',
                                 doSomething: function() { return 'Something.'; },
