@@ -26,7 +26,8 @@ define([
             get: function() {
                 // TODO: eww ...
                 var inherited = CoreObject.prototype.describe('instanceDefaults').get.call(this);
-                return CoreObject.assign({
+                // var inherited = this.super('instanceDefaults');
+                return CoreObject.assign(inherited, {
                     _elementId: {
                         enumerable: false,
                         value: 'js-app'
@@ -35,7 +36,7 @@ define([
                         enumerable: false,
                         value: null
                     }
-                }, inherited);
+                });
             }
         },
         constructor: function App() {

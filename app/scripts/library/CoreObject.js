@@ -7,7 +7,7 @@
  */
 /** ================================================================================================================ **/
 
-/* jshint newcap: false */
+/* jshint laxbreak: true, newcap: false */
 
 define([
 
@@ -78,6 +78,22 @@ define([
             var definition = CoreObject.assign.apply(this, slice.call(arguments));
             return Object.defineProperties(this, definition);
         },
+        // super: function(key) {
+        //     if ( ! key) { return Object.getPrototypeOf(this.constructor.prototype); }
+
+        //     var supe = Object.getPrototypeOf(this.constructor.prototype);
+        //     var desc = supe.describe(key);
+
+        //     if (arguments.length > 1) {
+        //         return (desc.value)
+        //             ? desc.value.apply(this, slice.call(arguments, 1))
+        //             : desc.set.apply(this, slice.call(arguments, 1));
+        //     }
+
+        //     return (desc.value)
+        //         ? desc.value.call(this)
+        //         : desc.get.call(this);
+        // },
         toString: function() {
             return '[' + (typeof this) + ' ' + this.constructor.name + ']';
         },

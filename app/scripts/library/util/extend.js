@@ -41,7 +41,7 @@ define([
         Child.prototype = Object.create((Parent && Parent.prototype), getDescriptors(protoProps));
         // var parent = (Parent && Parent.prototype);
         // Child.prototype = Object.create(parent, assignDescriptors(protoProps, {
-        //     super: {
+        //     parent: {
         //         get: function() {
         //             return parent;
         //         }
