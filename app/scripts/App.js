@@ -25,12 +25,8 @@ define([
         instanceDefaults: {
             get: function() {
                 // TODO: eww ...
-                // var inherited = Object.getOwnPropertyDescriptor(CoreObject.prototype, 'instanceDefaults').get.call(this);
                 var inherited = CoreObject.prototype.describe('instanceDefaults').get.call(this);
-                // var inherited = CoreObject.describe('instanceDefaults').get.call(this);
-                // var inherited = this.super.describe('instanceDefaults').get.call(this);
                 return CoreObject.assign({
-                // return this.super.constructor.assign({
                     _elementId: {
                         enumerable: false,
                         value: 'js-app'
@@ -44,7 +40,6 @@ define([
         },
         constructor: function App() {
             CoreObject.apply(this, arguments);
-            // this.super.constructor.apply(this, arguments);
         },
         elementId: {
             get: function() {

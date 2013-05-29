@@ -64,6 +64,7 @@ define([
             // console.log(this.constructorName + '#constructor', arguments);
             this.define(this.instanceDefaults, instanceProps || {});
         },
+        // 'public' members
         can: function(key) {
             return typeof this[key] === 'function';
         },
@@ -77,7 +78,6 @@ define([
             var definition = CoreObject.assign.apply(this, slice.call(arguments));
             return Object.defineProperties(this, definition);
         },
-        // 'public' members
         toString: function() {
             return '[' + (typeof this) + ' ' + this.constructor.name + ']';
         },
