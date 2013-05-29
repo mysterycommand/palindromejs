@@ -45,13 +45,13 @@ define([
                 var name = ctor.substring(0, 1).toLowerCase() + ctor.substring(1);
                 var uniqueId = unique(ctor);
                 return {
-                    instanceId: {
+                    _instanceId: {
                         configurable: false,
                         enumerable: false,
                         value: uniqueId,
                         writable: false
                     },
-                    instanceName: {
+                    _instanceName: {
                         configurable: false,
                         enumerable: false,
                         value: name + uniqueId,
@@ -78,6 +78,18 @@ define([
         // 'public' members
         toString: function() {
             return '[' + (typeof this) + ' ' + this.constructor.name + ']';
+        },
+        instanceId: {
+            configurable: false,
+            get: function() {
+                return this._instanceId;
+            }
+        },
+        instanceName: {
+            configurable: false,
+            get: function() {
+                return this._instanceName;
+            }
         }
         // 'private' members
     });
