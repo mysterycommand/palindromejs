@@ -117,7 +117,7 @@ define([
                     instanceDefaults: {
                         get: function() {
                             // TODO: eww ..?
-                            var inherited = this.super.describe('instanceDefaults').get.call(this);
+                            var inherited = CoreObject.prototype.describe('instanceDefaults').get.call(this);
                             return CoreObject.assign({
                                 test: 'This is a test',
                                 doSomething: function() { return 'Something.'; },
