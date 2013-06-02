@@ -10,7 +10,11 @@
         <title></title>
 
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
+        <!-- <meta name="viewport" content="width=device-width"> -->
+
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="viewport" content="width=320.1, initial-scale=1, user-scalable=no">
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <link rel="stylesheet" href="styles/main.css">
@@ -20,7 +24,7 @@
         <!-- endbuild -->
     </head>
     <body>
-        <svg id="js-app" class="stage" width="100%" height="100%"></svg>
+        <div id="js-app" class="app container"></div>
         <!-- <div id="js-test" class="container"></div> -->
 
         <!--[if lt IE 7]>
