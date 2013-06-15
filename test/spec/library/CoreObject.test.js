@@ -42,9 +42,8 @@ define([
             var coreObject = new CoreObject();
             (coreObject).should.have.a.property('toString');
             (coreObject.toString).should.be.a('function');
-            (coreObject.toString()).should.contain('object');
+            (coreObject.toString()).should.contain('coreObject');
             (coreObject.toString()).should.contain('CoreObject');
-            (coreObject.toString()).should.equal('[object CoreObject]');
         });
         describe('#extend', function () {
             it('should exist and be a function', function () {
@@ -87,10 +86,12 @@ define([
                 (new GreatGrandChild()).should.be.an.instanceof(GreatGrandChild);
             });
             it('should create objects with instanceId and instanceName properties', function () {
-                var Descendant = CoreObject.extend(null, {
-                    constructor: function Descendant() {
-                        CoreObject.apply(this, arguments);
-                    }
+                var Descendant = CoreObject.extend(null, function(base) {
+                    return {
+                        constructor: function Descendant() {
+                            base.constructor.apply(this, arguments);
+                        }
+                    };
                 });
                 var descendant = new Descendant();
                 (descendant).should.have.a.property('instanceId');
@@ -100,36 +101,39 @@ define([
                 (descendant.instanceName).should.contain('descendant');
             });
             it('should create objects with nice toString output', function () {
-                var Descendant = CoreObject.extend(null, {
-                    constructor: function Descendant() {
-                        CoreObject.apply(this, arguments);
-                    }
+                var Descendant = CoreObject.extend(null, function(base) {
+                    return {
+                        constructor: function Descendant() {
+                            base.constructor.apply(this, arguments);
+                        }
+                    };
                 });
                 var descendant = new Descendant();
                 (descendant).should.have.a.property('toString');
                 (descendant.toString).should.be.a('function');
-                (descendant.toString()).should.contain('object');
+                (descendant.toString()).should.contain('descendant');
                 (descendant.toString()).should.contain('Descendant');
-                (descendant.toString()).should.equal('[object Descendant]');
             });
             it('should provide a way of merging instance defaults', function () {
-                var Descendant = CoreObject.extend(null, {
-                    instanceDefaults: {
-                        get: function() {
-                            // TODO: eww ..?
-                            var inherited = CoreObject.prototype.describe('instanceDefaults').get.call(this);
-                            return CoreObject.assign({
-                                test: 'This is a test',
-                                doSomething: function() { return 'Something.'; },
-                                getter: {
-                                    get: function() { return 'Getter.'; }
-                                }
-                            }, inherited);
+                var Descendant = CoreObject.extend(null, function(base) {
+                    return {
+                        instanceDefaults: {
+                            get: function() {
+                                // TODO: eww ..?
+                                var inherited = base.describe('instanceDefaults').get.call(this);
+                                return CoreObject.assign({
+                                    test: 'This is a test',
+                                    doSomething: function() { return 'Something.'; },
+                                    getter: {
+                                        get: function() { return 'Getter.'; }
+                                    }
+                                }, inherited);
+                            }
+                        },
+                        constructor: function Descendant() {
+                            base.constructor.apply(this, arguments);
                         }
-                    },
-                    constructor: function Descendant() {
-                        CoreObject.apply(this, arguments);
-                    }
+                    };
                 });
                 var descendant = new Descendant();
 
@@ -183,10 +187,12 @@ define([
                 (greatGrandChild).should.be.an.instanceof(GreatGrandChild);
             });
             it('should create objects with instanceId and instanceName properties', function () {
-                var Descendant = CoreObject.extend(null, {
-                    constructor: function Descendant() {
-                        CoreObject.apply(this, arguments);
-                    }
+                var Descendant = CoreObject.extend(null, function(base) {
+                    return {
+                        constructor: function Descendant() {
+                            base.constructor.apply(this, arguments);
+                        }
+                    };
                 });
                 var descendant = Descendant.create();
                 (descendant).should.have.a.property('instanceId');
@@ -196,17 +202,18 @@ define([
                 (descendant.instanceName).should.contain('descendant');
             });
             it('should create objects with nice toString output', function () {
-                var Descendant = CoreObject.extend(null, {
-                    constructor: function Descendant() {
-                        CoreObject.apply(this, arguments);
-                    }
+                var Descendant = CoreObject.extend(null, function(base) {
+                    return {
+                        constructor: function Descendant() {
+                            base.constructor.apply(this, arguments);
+                        }
+                    };
                 });
                 var descendant = Descendant.create();
                 (descendant).should.have.a.property('toString');
                 (descendant.toString).should.be.a('function');
-                (descendant.toString()).should.contain('object');
+                (descendant.toString()).should.contain('descendant');
                 (descendant.toString()).should.contain('Descendant');
-                (descendant.toString()).should.equal('[object Descendant]');
             });
         });
     });

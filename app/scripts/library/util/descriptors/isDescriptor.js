@@ -24,7 +24,7 @@ define([
 
     var keys = ['configurable', 'enumerable', 'get', 'set', 'value', 'writable'];
     return function isDescriptor(obj) {
-        return keys.some(function(key) {
+        return obj && keys.some(function(key) {
             return obj.hasOwnProperty(key);
         });
     };

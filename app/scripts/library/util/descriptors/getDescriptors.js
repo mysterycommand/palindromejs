@@ -21,14 +21,14 @@ define([
 
     'use strict';
 
-    return function getDescriptors(obj) {
+    return function getDescriptors(src) {
+        if ( ! src) { return {}; }
+
         var descriptors = {};
-
-        Object.keys(obj).forEach(function(key) {
-            if (isDescriptor(obj[key])) { descriptors[key] = ensureDescriptor(obj[key]); }
-            else { descriptors[key] = Object.getOwnPropertyDescriptor(obj, key); }
+        Object.keys(src).forEach(function(key) {
+            if (isDescriptor(src[key])) { descriptors[key] = ensureDescriptor(src[key]); }
+            else { descriptors[key] = Object.getOwnPropertyDescriptor(src, key); }
         });
-
         return descriptors;
     };
 

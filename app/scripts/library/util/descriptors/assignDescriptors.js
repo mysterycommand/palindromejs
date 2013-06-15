@@ -11,18 +11,12 @@ define([
 
     'library/util/descriptors/ensureDescriptor',
     'library/util/descriptors/getDescriptors',
-    'library/util/descriptors/isConfigurable',
-    // 'library/util/descriptors/isDescriptor',
-    // 'library/util/descriptors/isWritable',
     'library/util/slice'
 
 ], function (
 
     ensureDescriptor,
     getDescriptors,
-    isConfigurable,
-    // isDescriptor,
-    // isWritable,
     slice
 
 ) {
@@ -30,32 +24,27 @@ define([
     'use strict';
 
     return function assignDescriptors() {
-        var sources = slice.call(arguments)
-            .filter(function(source) {
-                return !! source; // remove falsey sources
+        var srcs = slice.call(arguments)
+            .filter(function(src) {
+                return !! src; // filter out falsey (null) sources
             });
-        if (sources.length === 0) { return {}; }
-        if (sources.length === 1) { return getDescriptors(sources.shift()); }
+        if (srcs.length === 0) { return {}; }
+        if (srcs.length === 1) { return getDescriptors(srcs.shift()); }
 
-        // the accumulated properties descriptor/definition
-        var descriptor = getDescriptors(sources.shift());
-        sources
-            .map(function(source) {
-                // only deal with descriptor hashes
-                return getDescriptors(source);
-            })
-            .forEach(function(source) {
-                Object.keys(source).forEach(function(key) {
-                    if (descriptor.hasOwnProperty(key) && ! isConfigurable(descriptor[key])) {
+        var descriptors = getDescriptors(srcs.shift());
+        srcs.forEach(function(src) {
+            Object.keys(getDescriptors(src))
+                .forEach(function(key) {
+                    if (descriptors.hasOwnProperty(key) &&
+                        descriptors[key].configurable === false) {
                         // don't override own & non-configurable descriptors
                         throw new TypeError('Cannot redefine property: ', key);
                     } else {
-                        descriptor[key] = ensureDescriptor(source[key]);
+                        descriptors[key] = ensureDescriptor(src[key]);
                     }
                 });
-            });
-
-        return descriptor;
+        });
+        return descriptors;
     };
 
 });

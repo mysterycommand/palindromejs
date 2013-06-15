@@ -7,48 +7,45 @@
  */
 /** ================================================================================================================ **/
 
+/* jshint laxbreak: true */
+
 define([
 
     'library/util/descriptors/assignDescriptors',
-    'library/util/descriptors/getDescriptors'
+    'library/util/descriptors/getDescriptors',
+    'library/util/slice'
 
 ], function (
 
     assignDescriptors,
-    getDescriptors
+    getDescriptors,
+    slice
 
 ) {
 
     'use strict';
 
-    var Child;
+    return function extend(Base, staticProps, protoFn) {
+        Base = Base || null;
+        staticProps = staticProps || null;
+        protoFn = protoFn || function() { return {}; };
 
-    return function extend(Parent, staticProps, protoProps) {
-        Parent = Parent || null;
-        staticProps = staticProps || {};
-        protoProps = protoProps || {};
+        if (typeof protoFn !== 'function') { throw new TypeError(protoFn + ' is not a function'); }
+
+        var baseClass = (Base && Base.prototype);
+        var protoProps = protoFn(baseClass);
+        var Heir;
 
         if (protoProps.hasOwnProperty('constructor') && typeof protoProps.constructor === 'function') {
-            Child = protoProps.constructor;
-        } else if (typeof Parent === 'function') {
-            Child = function Child() {
-                return Parent.apply(this, arguments);
-            };
+            Heir = protoProps.constructor;
         } else {
-            Child = function Child() {};
+            Heir = (typeof Base === 'function')
+                ? function Heir() { return Base.apply(this, arguments); }
+                : function Heir() {};
         }
 
-        Child.prototype = Object.create((Parent && Parent.prototype), getDescriptors(protoProps));
-        // var proto = (Parent && Parent.prototype);
-        // Child.prototype = Object.create(proto, assignDescriptors(protoProps, {
-        //     super: {
-        //         get: function() {
-        //             return proto;
-        //         }
-        //     }
-        // }));
-
-        return Object.defineProperties(Child, assignDescriptors(Parent, staticProps));
+        Heir.prototype = Object.create(baseClass, getDescriptors(protoProps));
+        return Object.defineProperties(Heir, assignDescriptors(Base, staticProps));
     };
 
 });

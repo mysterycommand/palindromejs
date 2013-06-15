@@ -19,21 +19,22 @@ define([
 
     'use strict';
 
-    return function assign(target) {
-        target = target || {};
-
-        var sources = slice.call(arguments, 1)
-            .filter(function(source) {
-                return !! source; // remove falsey sources
+    return function assign() {
+        var srcs = slice.call(arguments)
+            .filter(function(src) {
+                return !! src; // filter out falsey (null) sources
             });
-        if (sources.length === 0) { return target; }
+        if (srcs.length === 0) { return {}; }
+        if (srcs.length === 1) { return srcs.shift(); }
 
-        sources.forEach(function(source) {
-            Object.keys(source).forEach(function(key) {
-                target[key] = source[key];
-            });
+        var trgt = srcs.shift();
+        srcs.forEach(function(src) {
+            Object.keys(src)
+                .forEach(function(key) {
+                    trgt[key] = src[key];
+                });
         });
-        return target;
+        return trgt;
     };
 
 });

@@ -139,20 +139,22 @@ define([
             }).should.throw(TypeError);
         });
         it('should create prototype properties with a third argument', function () {
-            var Ctor = extend(Object, null, {
-                constructor: function Ctor() {
-                    // console.log('Ctor#constructor');
-                },
-                _name: {
-                    configurable: false,
-                    enumerable: false,
-                    get: function() {
-                        return 'ctor';
+            var Ctor = extend(Object, null, function(/* base */) {
+                return {
+                    constructor: function Ctor() {
+                        // console.log('Ctor#constructor');
+                    },
+                    _name: {
+                        configurable: false,
+                        enumerable: false,
+                        get: function() {
+                            return 'ctor';
+                        }
+                    },
+                    toString: function() {
+                        return '[object Ctor]';
                     }
-                },
-                toString: function() {
-                    return '[object Ctor]';
-                }
+                };
             });
 
             ((new Ctor())._name).should.equal('ctor');

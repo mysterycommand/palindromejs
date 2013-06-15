@@ -21,61 +21,60 @@ define([
 
     'use strict';
 
-    var App = CoreObject.extend(null, {
-        instanceDefaults: {
-            get: function() {
-                console.log('App.super', App.super());
-                // // TODO: eww ...
-                // var inherited = CoreObject.prototype.describe('instanceDefaults').get.call(this);
-                // var inherited = this.super.instanceDefaults;
-                return {}; // CoreObject.assign(inherited, {
-                //     _elementId: {
-                //         enumerable: false,
-                //         value: 'js-app'
-                //     },
-                //     _element: {
-                //         enumerable: false,
-                //         value: null
-                //     }
-                // });
-            }
-        },
-        constructor: function App() {
-            CoreObject.apply(this, arguments);
-        },
-        elementId: {
-            get: function() {
-                if (this._elementId) { return this._elementId; }
-                this._elementId = (this._element)
-                    ? this._element.getAttribute('id')
-                    : '';
-                return this._elementId;
+    var App = CoreObject.extend(null, function(base) {
+        return {
+            instanceDefaults: {
+                get: function() {
+                    var inherited = base.describe('instanceDefaults').get.call(this);
+                    return App.assign(inherited, {
+                        _elementId: {
+                            enumerable: false,
+                            value: 'js-app'
+                        },
+                        _element: {
+                            enumerable: false,
+                            value: null
+                        }
+                    });
+                }
             },
-            set: function(value) {
-                if (this._elementId === value) { return; }
-                this._elementId = value;
+            constructor: function App() {
+                base.constructor.apply(this, arguments);
+            },
+            elementId: {
+                get: function() {
+                    if (this._elementId) { return this._elementId; }
+                    this._elementId = (this._element)
+                        ? this._element.getAttribute('id')
+                        : '';
+                    return this._elementId;
+                },
+                set: function(value) {
+                    if (this._elementId === value) { return; }
+                    this._elementId = value;
 
-                if (this._element) {
-                    this._element.setAttribute('id', this._elementId);
+                    if (this._element) {
+                        this._element.setAttribute('id', this._elementId);
+                    }
+                }
+            },
+            element: {
+                get: function() {
+                    return this._element || (this._element = document.getElementById(this.elementId));
+                },
+                set: function(value) {
+                    var id = value.getAttribute('id');
+
+                    if (id) {
+                        this._elementId = id;
+                    } else {
+                        value.setAttribute('id', this._elementId);
+                    }
+
+                    this._element = value;
                 }
             }
-        },
-        element: {
-            get: function() {
-                return this._element || (this._element = document.getElementById(this.elementId));
-            },
-            set: function(value) {
-                var id = value.getAttribute('id');
-
-                if (id) {
-                    this._elementId = id;
-                } else {
-                    value.setAttribute('id', this._elementId);
-                }
-
-                this._element = value;
-            }
-        }
+        };
     });
 
     return App;
