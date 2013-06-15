@@ -10,15 +10,11 @@
 require([
 
     'jquery',
-    // 'lodash',
-    'library/CoreObject',
     'App'
 
 ], function (
 
     $,
-    // _,
-    CoreObject,
     App
 
 ) {
@@ -26,7 +22,7 @@ require([
     'use strict';
     if (window.$) { window.$.noConflict(); }
     if (window.jQuery) { window.jQuery.noConflict(); }
-    if (window._) { window._.noConflict(); }
+    // if (window._) { window._.noConflict(); }
 
     $(function() {
         var app = App.create();

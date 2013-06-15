@@ -11,7 +11,7 @@
 
 define([
 
-    'library/CoreObject'
+    'library/core/CoreObject'
 
 ], function (
 

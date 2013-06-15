@@ -8,10 +8,10 @@
 /** ================================================================================================================ **/
 define([
 
+    'spec/library/core/CoreObject.test',
     'spec/library/util/assign.test',
     'spec/library/util/descriptors/assignDescriptors.test',
-    'spec/library/util/extend.test',
-    'spec/library/CoreObject.test'
+    'spec/library/util/extend.test'
 
 ], function (
 
