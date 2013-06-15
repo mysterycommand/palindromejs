@@ -33,11 +33,18 @@ define([
      */
     var CoreObject = extend(Object, {
         // I like to put 'public static' members all the way at the top.
+        /**
+         * Proxies to the assignDescriptors method for convenience, particularly when inheriting values from a
+         * base class's getter.
+         *
+         * @see     documentation in '/library/util/descriptors/assignDescriptors' for more.
+         */
         assign: assignDescriptors,
         /**
          * Use CoreObject.create([instanceProps]) to generate instances. Currently it just proxies to new, but
          * might add functionality latyer. If instanceProps is passed, it's members will be copied onto the new
          * instance.
+         *
          * @param  {Object} instanceProps An object who's properties will be copied onto the new instance.
          * @return {Object}               A new instance of the constructor from which create was called.
          */
@@ -48,6 +55,7 @@ define([
          * Use CoreObject.extend([staticProps], [protoFn]) to create new "subclasses" (that is, constructors
          * with the appropriate prototype chain set up). Proxies out to `/library/core/extend`, but passes
          * the current constructor as the first argument.
+         *
          * @param  {Object}     staticProps     An object who's properties will be copied onto the new
          *                                      constructor.
          * @param  {Funciton}   protoFn         A function that will be passed a reference to this constructor's
