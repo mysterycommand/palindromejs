@@ -79,20 +79,23 @@ define([
             return Object.defineProperties(this, definition);
         },
         // super: function(key) {
-        //     if ( ! key) { return Object.getPrototypeOf(this.constructor.prototype); }
+        //     var prot = Object.getPrototypeOf(this);
+        //     var supe = Object.getPrototypeOf(prot);
+        //     return supe;
+        //     // if ( ! key) { return Object.getPrototypeOf(this.constructor.prototype); }
 
-        //     var supe = Object.getPrototypeOf(this.constructor.prototype);
-        //     var desc = supe.describe(key);
+        //     // var supe = Object.getPrototypeOf(this.constructor.prototype);
+        //     // var desc = supe.describe(key);
 
-        //     if (arguments.length > 1) {
-        //         return (desc.value)
-        //             ? desc.value.apply(this, slice.call(arguments, 1))
-        //             : desc.set.apply(this, slice.call(arguments, 1));
-        //     }
+        //     // if (arguments.length > 1) {
+        //     //     return (desc.value)
+        //     //         ? desc.value.apply(this, slice.call(arguments, 1))
+        //     //         : desc.set.apply(this, slice.call(arguments, 1));
+        //     // }
 
-        //     return (desc.value)
-        //         ? desc.value.call(this)
-        //         : desc.get.call(this);
+        //     // return (desc.value)
+        //     //     ? desc.value.call(this)
+        //     //     : desc.get.call(this);
         // },
         toString: function() {
             return '[' + (typeof this) + ' ' + this.constructor.name + ']';

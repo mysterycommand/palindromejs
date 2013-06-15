@@ -24,19 +24,20 @@ define([
     var App = CoreObject.extend(null, {
         instanceDefaults: {
             get: function() {
-                // TODO: eww ...
-                var inherited = CoreObject.prototype.describe('instanceDefaults').get.call(this);
-                // var inherited = this.super('instanceDefaults');
-                return CoreObject.assign(inherited, {
-                    _elementId: {
-                        enumerable: false,
-                        value: 'js-app'
-                    },
-                    _element: {
-                        enumerable: false,
-                        value: null
-                    }
-                });
+                console.log('App.super', App.super());
+                // // TODO: eww ...
+                // var inherited = CoreObject.prototype.describe('instanceDefaults').get.call(this);
+                // var inherited = this.super.instanceDefaults;
+                return {}; // CoreObject.assign(inherited, {
+                //     _elementId: {
+                //         enumerable: false,
+                //         value: 'js-app'
+                //     },
+                //     _element: {
+                //         enumerable: false,
+                //         value: null
+                //     }
+                // });
             }
         },
         constructor: function App() {
