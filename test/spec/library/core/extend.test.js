@@ -8,7 +8,7 @@
 /** ================================================================================================================ **/
 define([
 
-    'library/util/extend'
+    'library/core/extend'
 
 ], function (
 
@@ -120,7 +120,8 @@ define([
                 two: 2,
                 three: {
                     configurable: false,
-                    get: function() { return 3; }
+                    get: function() { return 3; },
+                    set: function(value) { this[value] = 3; } // That's crazy!
                 }
             });
 

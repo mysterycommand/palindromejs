@@ -15,6 +15,9 @@ define([
 
     'use strict';
 
+    /**
+     * This is a bit silly, but it keeps it in one place ... DRY!
+     */
     return Array.prototype.slice;
 
 });

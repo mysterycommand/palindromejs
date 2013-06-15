@@ -21,7 +21,13 @@ define([
 
     'use strict';
 
-    var App = CoreObject.extend(null, function(base) {
+    var App = CoreObject.extend({
+        VERSION: {
+            configurable: false,
+            value: '0.0.1',
+            writable: false
+        }
+    }, function(base) {
         return {
             instanceDefaults: {
                 get: function() {
@@ -38,8 +44,8 @@ define([
                     });
                 }
             },
-            constructor: function App() {
-                base.constructor.apply(this, arguments);
+            constructor: function App(instanceProps) {
+                base.constructor.call(this, instanceProps);
             },
             elementId: {
                 get: function() {

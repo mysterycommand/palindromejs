@@ -26,8 +26,7 @@ require([
 
     $(function() {
         var app = App.create();
-        console.log(app.toString(), app.instanceName);
-        console.log(app.element);
+        console.log(app.toString());
 
         var Test = App.extend(null, function(base) {
             return {
@@ -46,15 +45,18 @@ require([
                         });
                     }
                 },
-                constructor: function Test() {
-                    base.constructor.apply(this, arguments);
+                constructor: function Test(instanceProps) {
+                    base.constructor.call(this, instanceProps);
                 }
             };
         });
 
         var test = Test.create();
-        console.log(test.toString(), test.instanceName);
-        console.log(test.element);
+        console.log(test.toString());
+
+        var test1 = Test.create();
+        console.log(test1.toString());
+        // console.log(test1);
     });
 });
 

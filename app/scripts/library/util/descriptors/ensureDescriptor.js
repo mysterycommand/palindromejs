@@ -19,27 +19,31 @@ define([
 
     'use strict';
 
-    // console.log('ensureDescriptor', ensureDescriptor({configurable: true}));
-    // console.log('ensureDescriptor', ensureDescriptor({enumerable: false}));
-    // console.log('ensureDescriptor', ensureDescriptor({get: function() { return 'yes'; }}));
-    // console.log('ensureDescriptor', ensureDescriptor({set: undefined}));
-    // console.log('ensureDescriptor', ensureDescriptor({value: null}));
-    // console.log('ensureDescriptor', ensureDescriptor({writable: true}));
-
-    return function ensureDescriptor(obj) {
-        if ( ! isDescriptor(obj)) { obj = {value: obj}; }
+    /**
+     * Accepts an object, and returns a valid property descriptor, but defaults to creating 'public' descriptors
+     * (that is similar to what you'd get if you directly declared properties on an object ... configurable,
+     * enumerable, and [in the case of data descriptors] writable).
+     *
+     * @param   {Object}    src     An object to convert to a property descriptor. Passing a partial descriptor
+     *                              will return a full valid 'public' descriptor. Passing anything other than
+     *                              a partial descriptor will return a data descriptor with the object passed
+     *                              as the value property.
+     * @return  {Object}            A valid property descriptor.
+     */
+    return function ensureDescriptor(src) {
+        if (! isDescriptor(src)) { src = {value: src}; }
 
         var descriptor = {
-            configurable: ((obj.hasOwnProperty('configurable')) ? obj.configurable : true),
-            enumerable: ((obj.hasOwnProperty('enumerable')) ? obj.enumerable : true)
+            configurable: ((src.hasOwnProperty('configurable')) ? src.configurable : true),
+            enumerable: ((src.hasOwnProperty('enumerable')) ? src.enumerable : true)
         };
 
-        if (obj.hasOwnProperty('get') || obj.hasOwnProperty('set')) {
-            descriptor.get = obj.get;
-            descriptor.set = obj.set;
+        if (src.hasOwnProperty('get') || src.hasOwnProperty('set')) {
+            descriptor.get = src.get;
+            descriptor.set = src.set;
         } else {
-            descriptor.value = obj.value;
-            descriptor.writable = ((obj.hasOwnProperty('writable')) ? obj.writable : true);
+            descriptor.value = src.value;
+            descriptor.writable = ((src.hasOwnProperty('writable')) ? src.writable : true);
         }
 
         return descriptor;

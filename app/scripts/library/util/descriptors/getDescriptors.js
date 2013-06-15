@@ -21,8 +21,15 @@ define([
 
     'use strict';
 
+    /**
+     * Collects and returns all the own property descriptors from a passed in source.
+     *
+     * @param   {Object}    src     The object who's own properties will be iterated over to generated the returned
+     *                              property descriptor.
+     * @return  {Object}            A valid property descriptor for all own properties of 'src'.
+     */
     return function getDescriptors(src) {
-        if ( ! src) { return {}; }
+        if (! src) { return {}; }
 
         var descriptors = {};
         Object.keys(src).forEach(function(key) {

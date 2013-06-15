@@ -23,10 +23,18 @@ define([
 
     'use strict';
 
+    /**
+     * Assign descriptors is kind of like 'assign' or 'copy', but it returns a new property descriptor object who's
+     * properties are built up out of any sources passed to the function. Later sources property descriptors will
+     * override earlier sources property descriptors, but trying to override descriptors marked as non-configurable
+     * will throw an error.
+     *
+     * @return  {Object}    A valid property descriptor with the accumulated values of any sources passed to it.
+     */
     return function assignDescriptors() {
         var srcs = slice.call(arguments)
             .filter(function(src) {
-                return !! src; // filter out falsey (null) sources
+                return (!! src); // filter out falsey (null) sources
             });
         if (srcs.length === 0) { return {}; }
         if (srcs.length === 1) { return getDescriptors(srcs.shift()); }

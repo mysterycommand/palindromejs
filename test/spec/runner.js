@@ -9,9 +9,9 @@
 define([
 
     'spec/library/core/CoreObject.test',
+    'spec/library/core/extend.test',
     'spec/library/util/assign.test',
-    'spec/library/util/descriptors/assignDescriptors.test',
-    'spec/library/util/extend.test'
+    'spec/library/util/descriptors/assignDescriptors.test'
 
 ], function (
 
