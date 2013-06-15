@@ -25,27 +25,27 @@ define([
 
     'use strict';
 
-    return function extend(Superclass, staticProps, protoFn) {
-        Superclass = Superclass || null;
+    return function extend(Base, staticProps, protoFn) {
+        Base = Base || null;
         staticProps = staticProps || null;
         protoFn = protoFn || function() { return {}; };
 
         if (typeof protoFn !== 'function') { throw new TypeError(protoFn + ' is not a function'); }
 
-        var superProto = (Superclass && Superclass.prototype);
-        var protoProps = protoFn(superProto);
-        var Subclass;
+        var baseProto = (Base && Base.prototype);
+        var protoProps = protoFn(baseProto);
+        var Heir;
 
         if (protoProps.hasOwnProperty('constructor') && typeof protoProps.constructor === 'function') {
-            Subclass = protoProps.constructor;
+            Heir = protoProps.constructor;
         } else {
-            Subclass = (typeof Superclass === 'function')
-                ? function Subclass() { return Superclass.apply(this, arguments); }
-                : function Subclass() {};
+            Heir = (typeof Base === 'function')
+                ? function Heir() { return Base.apply(this, arguments); }
+                : function Heir() {};
         }
 
-        Subclass.prototype = Object.create(superProto, getDescriptors(protoProps));
-        return Object.defineProperties(Subclass, assignDescriptors(Superclass, staticProps));
+        Heir.prototype = Object.create(baseProto, getDescriptors(protoProps));
+        return Object.defineProperties(Heir, assignDescriptors(Base, staticProps));
     };
 
 });
