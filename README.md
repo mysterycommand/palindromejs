@@ -170,7 +170,7 @@ Called without arguments, this method returns a property descriptors object cont
 This method can be called with any number of sources. These sources are passed to `assign`, and the returned property descriptors object is defined on the calling object.
 
 ##### `toString()`
-Returns a string representation of the calling object. If you call the base constructor as described above, and don't mess with the getters described below, this returns a string in the form of `[_instanceName_ _ConstructorName_]`.
+Returns a string representation of the calling object. If you call the base constructor as described above, and don't mess with the getters described below, this returns a string in the form of `[instanceName ConstructorName]`.
 
 ##### `instanceDefaults`
 This special getter returns an object who's properties will be set on new instances via the `define` method (called from `CoreObject`'s constructor). When extending `CoreObject` if you override this getter, be sure to call `base.describe('instanceDefaults').get.call(this)` and merge your new instance's defaults into the result.
