@@ -155,25 +155,25 @@ console.log('');
 `CoreObject` defines a constructor, 5 methods: `can`, `has`, `describe`, `define`, and `toString`, and 3 getters: `instanceDefaults`, `instanceId`, and `instanceName`, on it's prototype.
 
 ##### `constructor([instanceProps])`
-The `CoreObject` constructor merges the (optionally) passed in `instanceProps` with `instanceDefaults` and then `defines` them on new instances. Be sure to name your constructors, like: `constructor: Person(instanceProps) {` (to get useful `toString` value). Also, if you extend `CoreObject` be sure to call the base constructor like: `base.constructor.call(this, instanceProps)` (also to get useful `toString` value).
+The `CoreObject` constructor merges the (optionally) passed in `instanceProps` with `instanceDefaults` and then `define`s them on new instances. Be sure to name your constructors, like: `constructor: Person(instanceProps) {` (to get a useful `toString` value). Also, when extending `CoreObject` be sure to call the base constructor like: `base.constructor.call(this, instanceProps)` (also to ensure a useful `toString` value).
 
 ##### `can(key)`
-Accepts a single `String` argument, and looks for a function property with that name on the instance (or in it's prototype chain). 
+Accepts a single `String` argument, and looks for a function property with that name on the instance or in it's prototype chain (using `typeof this[key] === 'function'`).
 
 ##### `has(key)`
-Accepts a single `String` argument, and looks for an own property with that name on the instance.
+Accepts a single `String` argument, and looks for an own property with that name on the instance (using `this.hasOwnProperty(key)`).
 
 ##### `describe([key])`
-Called without arguments, this method returns a property descriptors object containing descriptors for each of the calling object's own properties. Passing the `String` argument causes the method to search up the prototype chain for a property with that name, and returns it's description (or null if no property is found with the specified name).
+Called without arguments, this method returns a property descriptors object containing descriptors for each of the calling object's own properties. Passing a `String` key causes the method to search up the prototype chain for a property with that name, and returns it's description (or null if no property is found with the specified name).
 
 ##### `define(...sources)`
 This method can be called with any number of sources. These sources are passed to `assign`, and the returned property descriptors object is defined on the calling object.
 
 ##### `toString()`
-Returns a string representation of the calling object. If you don't mess with the getters described below, this returns a string in the form of `[instanceName ConstructorName]`.
+Returns a string representation of the calling object. If you call the base constructor as described above, and don't mess with the getters described below, this returns a string in the form of `[_instanceName_ _ConstructorName_]`.
 
 ##### `instanceDefaults`
-This special getter returns an object who's properties will be set on new instances via the `define` method (called from `CoreObject`'s constructor). If you extend `CoreObject` and override this getter, be sure to call `base.describe('instanceDefaults').get.call(this)` and merge any new defaults into the result.
+This special getter returns an object who's properties will be set on new instances via the `define` method (called from `CoreObject`'s constructor). When extending `CoreObject` if you override this getter, be sure to call `base.describe('instanceDefaults').get.call(this)` and merge your new instance's defaults into the result.
 
 ##### `instanceId`
 A read-only accessor for a unique identifier created for each instance of a particular constructor.
