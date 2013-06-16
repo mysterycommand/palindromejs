@@ -6,11 +6,15 @@ Palindrome JS is an MVCVM framework … that's right, Model, View, Controller, 
 
 ## Introducing `CoreObject`!
 
-[Problem No. 1: Inheritance](https://github.com/mysterycommand/palindromejs/wiki/Problem-No.-1:-Inheritance) — SOLVED! Basics:
+[Problem No. 1: Inheritance](https://github.com/mysterycommand/palindromejs/wiki/Problem-No.-1:-Inheritance) — SOLVED!
+
+#### Basics:
 
 ```javascript
 var Animal = CoreObject.extend(null, function(base) {
     return {
+        // The user is encouraged to name their constructors, as it will make for a more meaningful
+        // toString method as we'll see in a few lines.
         constructor: function Animal(instanceProps) {
             base.constructor.call(this, instanceProps);
         },
@@ -20,7 +24,7 @@ var Animal = CoreObject.extend(null, function(base) {
     };
 });
 var animal = Animal.create();
-animal.speak();                                 // Hi from [animal0 Animal]
+animal.speak();                                 // Hi from [animal0 Animal] // <- meaningful, see?
 console.log('');
 
 var Bird = Animal.extend(null, function(base) {
@@ -45,9 +49,10 @@ console.log('');
 var Penguin = Bird.extend(null, function(base) {
     return {
         instanceDefaults: {
-            // The instanceDefaults 'getter' is a special property of CoreObject. The object returned from this
-            // method will be merged into any new instance. Be sure to call the base class's instanceDefaults
-            // though. CoreObject uses it to create a unique id and name for instances of it's subclasses.
+            // The instanceDefaults 'getter' is a special property of CoreObject. The object returned
+            // from this method will be merged into any new instance. Be sure to call the base class's
+            // instanceDefaults though. CoreObject uses it to create a unique id and name for instances
+            // of it's subclasses.
             get: function() {
                 // Calling the "super" of a 'getter' method is kind-of wonky in JavaScript, but this is
                 // far better than what I started out with ... aaahhh JavaScript.
@@ -84,3 +89,13 @@ var penguin1 = Penguin.create({ name: 'Chilly Willy' });
 penguin1.speak();                               // Chirp chirp from [penguin1 Penguin]
 console.log('penguin1.name:', penguin1.name);   // penguin1.name: Chilly Willy
 ```
+
+#### Details:
+
+CoreObject has 3 static methods: `extend`, `create`, and `assign`. These methods are automatically copied over to it's 'subclasses' (that is, to constructor functions who's prototypes have CoreObject's prototype in their prototype chains … ugh, JavaScript). Let's look at them:
+
+##### `extend(staticProps, protoFn)`
+
+##### `create(instanceProps)`
+
+##### `assign(/* ...sources */)`
