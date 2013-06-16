@@ -125,6 +125,9 @@ var Person = CoreObject.extend(null, function(base) {
                     }
                 });
             }
+        },
+        constructor: function Person(instanceProps) {
+            base.constructor.call(this, instanceProps);
         }
     };
 });
