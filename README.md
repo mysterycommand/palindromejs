@@ -103,7 +103,7 @@ By building up property descriptors and using the ES5 methods, it's possible to 
 Anyway, let's look at them:
 
 ##### `extend(staticProps, protoFn)`
-`CoreObject.extend` is the main workhorse of inheritance in PalindromeJS. It accepts two arguments, `staticProps` and `protoFn`, and returns a new constructor with the proper prototype chain wired up.
+This is the main workhorse of inheritance in PalindromeJS. It accepts two arguments, `staticProps` and `protoFn`, and returns a new constructor with the proper prototype chain wired up.
 
 The first argument, `staticProps` is a plain object containing key value pairs. Values can be 'regular' JavaScript types (Array, Boolean, Date, Function, Number, Object, RegExp, or String) or property descriptors (either data descriptors or accessor descriptors [as described by the [Object.defineProperty](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties) on MDN]). In either case the whole object is converted into a property descriptors object. These are then mixed in with the base constructor's own properties, and then defined on the new constructor via [Object.defineProperties](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties). By mixing in the base constructor's own properties, any constructor that inherits from `CoreObject` automatically gets the `extend`, `create`, and `assign` functionality.
 
@@ -112,12 +112,12 @@ The second argument, `protoFn` is a function that returns an object. The functio
 > Development note: the idea to pass the super constructor's prototype came from [LinkedIn's Fiber](https://github.com/linkedin/Fiber) library, and [DotNetWise's FastClass](https://github.com/dotnetwise/Javascript-FastClass) implementation of a similar concept. I haven't done performance tests (yet), but I'd guess that because of my implementation's reliance on browser-native ES5 methods (`Object.create`, `Object.defineProperties`, `Object.defineProperty`, `Object.getOwnPropertyDescriptor`, `Object.keys`, as well as `Array.filter`, `Array.forEach`, `Array.some`) that mine's significantly slower (not to mention [incompatible with version of IE less than 9](http://kangax.github.io/es5-compat-table/)).
 
 ##### `create(instanceProps)`
-`CoreObject.create` accepts a single argument, `instanceProps`, and returns a new instance the constructor from which it's called (remember that `create` is copied onto any subclass of `CoreObject`). At the moment, it's functionally equivalent to using `new CoreObject(instanceProps)`. However, use of `create` is encouraged, as it may be used later to provide additional funcitonality to the inheritance system. Also, it has a nice kind-of parity with `CoreObject.extend`.
+Accepts a single argument, `instanceProps`, and returns a new instance the constructor from which it's called (remember that `create` is copied onto any subclass of `CoreObject`). At the moment, it's functionally equivalent to using `new CoreObject(instanceProps)`. However, use of `create` is encouraged, as it may be used later to provide additional funcitonality to the inheritance system. Also, it has a nice kind-of parity with `CoreObject.extend`.
 
 The argument `instanceProps` is converted to a property descriptors object and then defined on the new instance via [Object.defineProperties](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties).
 
-##### `assign(/* ...sources */)`
-`CoreObject.assign` accepts any number of sources, and returns a new object that is the accumulated own property descriptors of those sources. It's used mostly by the internals of the `extend` method, but also comes in handy when trying to access overridden getters and setters. For example, `CoreObject` has a spectial getter defined on it's prototype `instanceDefaults` that creates an instance id and name for any instance created from any subclass of `CoreObject`. It will sometimes be desireable to provide a constructor with it's own instance defaults, but also invoke the overridden getter. In the example below, `person.toString` is still useful because `CoreObject`'s instance defaults were inherited correctly:
+##### `assign(...sources)`
+Accepts any number of sources, and returns a new object that is the accumulated own property descriptors of those sources. It's used mostly by the internals of the `extend` method, but also comes in handy when trying to access overridden getters and setters. For example, `CoreObject` has a spectial getter defined on it's prototype `instanceDefaults` that creates an instance id and name for any instance created from any subclass of `CoreObject`. It will sometimes be desireable to provide a constructor with it's own instance defaults, but also invoke the overridden getter. In the example below, `person.toString` is still useful because `CoreObject`'s instance defaults were inherited correctly:
 
 ```javascript
 var Person = CoreObject.extend(null, function(base) {
@@ -125,7 +125,7 @@ var Person = CoreObject.extend(null, function(base) {
         instanceDefaults: {
             get: function() {
                 var inherited = base.describe('instanceDefaults').get.call(this);
-                return Person.assign(inherited, { // <- assign is defined on all CoreObject heir classes
+                return Person.assign(inherited, { // <- assign is defined on CoreObject heir classes
                     fname: 'John',
                     lname: 'Doe',
                     fullName: {
@@ -152,24 +152,34 @@ console.log('');
 
 #### CoreObject Prototype Methods:
 
-`CoreObject` has 5 methods: `can`, `has`, `describe`, `define`, and `toString`, and 3 getters: `instanceDefaults`, `instanceId`, and `instanceName`, attached to it's prototype.
+`CoreObject` defines a constructor, 5 methods: `can`, `has`, `describe`, `define`, and `toString`, and 3 getters: `instanceDefaults`, `instanceId`, and `instanceName`, on it's prototype.
+
+##### `constructor([instanceProps])`
+The `CoreObject` constructor merges the (optionally) passed in `instanceProps` with `instanceDefaults` and then `defines` them on new instances. Be sure to name your constructors, like: `constructor: Person(instanceProps) {` (to get useful `toString` value). Also, if you extend `CoreObject` be sure to call the base constructor like: `base.constructor.call(this, instanceProps)` (also to get useful `toString` value).
 
 ##### `can(key)`
+Accepts a single `String` argument, and looks for a function property with that name on the instance (or in it's prototype chain). 
 
 ##### `has(key)`
+Accepts a single `String` argument, and looks for an own property with that name on the instance.
 
-##### `describe(key)`
+##### `describe([key])`
+Called without arguments, this method returns a property descriptors object containing descriptors for each of the calling object's own properties. Passing the `String` argument causes the method to search up the prototype chain for a property with that name, and returns it's description (or null if no property is found with the specified name).
 
-##### `define(/* ...sources */)`
+##### `define(...sources)`
+This method can be called with any number of sources. These sources are passed to `assign`, and the returned property descriptors object is defined on the calling object.
 
 ##### `toString()`
+Returns a string representation of the calling object. If you don't mess with the getters described below, this returns a string in the form of `[instanceName ConstructorName]`.
 
 ##### `instanceDefaults`
+This special getter returns an object who's properties will be set on new instances via the `define` method (called from `CoreObject`'s constructor). If you extend `CoreObject` and override this getter, be sure to call `base.describe('instanceDefaults').get.call(this)` and merge any new defaults into the result.
 
 ##### `instanceId`
+A read-only accessor for a unique identifier created for each instance of a particular constructor.
 
 ##### `instanceName`
-
+A read-only accessor for a unique name created for each instance of a particular constructor. Takes the form of `this.constructor.name.substring(0, 1).toLowerCase() + this.constructor.name.substring(1) + this.instanceId` (e.g. `coreObject0` or `person13` etc.).
 
 
 
