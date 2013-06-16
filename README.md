@@ -112,12 +112,12 @@ The second argument, `protoFn` is a function that returns an object. The functio
 > Development note: the idea to pass the super constructor's prototype came from [LinkedIn's Fiber](https://github.com/linkedin/Fiber) library, and [DotNetWise's FastClass](https://github.com/dotnetwise/Javascript-FastClass) implementation of a similar concept. I haven't done performance tests (yet), but I'd guess that because of my implementation's reliance on browser-native ES5 methods (`Object.create`, `Object.defineProperties`, `Object.defineProperty`, `Object.getOwnPropertyDescriptor`, `Object.keys`, as well as `Array.filter`, `Array.forEach`, `Array.some`) that mine's significantly slower (not to mention [incompatible with version of IE less than 9](http://kangax.github.io/es5-compat-table/)).
 
 ##### `create(instanceProps)`
-Accepts a single argument, `instanceProps`, and returns a new instance the constructor from which it's called (remember that `create` is copied onto any subclass of `CoreObject`). At the moment, it's functionally equivalent to using `new CoreObject(instanceProps)`. However, use of `create` is encouraged, as it may be used later to provide additional funcitonality to the inheritance system. Also, it has a nice kind-of parity with `CoreObject.extend`.
+Accepts a single argument, `instanceProps`, and returns a new instance of the constructor from which it's called (remember that `create` is copied onto any subclass of `CoreObject`). At the moment, it's functionally equivalent to using `new CoreObject(instanceProps)`. However, use of `create` is encouraged, as it may be used later to provide additional funcitonality to the inheritance system. Also, it has a nice kind-of parity with `CoreObject.extend`.
 
 The argument `instanceProps` is converted to a property descriptors object and then defined on the new instance via [Object.defineProperties](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties).
 
 ##### `assign(...sources)`
-Accepts any number of sources, and returns a new object that is the accumulated own property descriptors of those sources. It's used mostly by the internals of the `extend` method, but also comes in handy when trying to access overridden getters and setters. For example, `CoreObject` has a spectial getter defined on it's prototype `instanceDefaults` that creates an instance id and name for any instance created from any subclass of `CoreObject`. It will sometimes be desireable to provide a constructor with it's own instance defaults, but also invoke the overridden getter. In the example below, `person.toString` is still useful because `CoreObject`'s instance defaults were inherited correctly:
+Accepts any number of sources, and returns a new object that is the accumulated own property descriptors of those sources. It's used mostly by the internals of the `extend` method, but also comes in handy when trying to access overridden getters and setters. For example, `CoreObject` has a special getter defined on it's prototype `instanceDefaults` that creates an instance id and name for any instance created from any subclass of `CoreObject`. It will sometimes be desireable to provide a constructor with it's own instance defaults, but also invoke the overridden getter. In the example below, `person.toString` is still useful because `CoreObject`'s instance defaults were inherited correctly:
 
 ```javascript
 var Person = CoreObject.extend(null, function(base) {
@@ -180,6 +180,8 @@ A read-only accessor for a unique identifier created for each instance of a part
 
 ##### `instanceName`
 A read-only accessor for a unique name created for each instance of a particular constructor. Takes the form of `this.constructor.name.substring(0, 1).toLowerCase() + this.constructor.name.substring(1) + this.instanceId` (e.g. `coreObject0` or `person13` etc.).
+
+## More soon …
 
 
 
