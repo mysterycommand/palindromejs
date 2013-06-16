@@ -55,6 +55,8 @@ var Penguin = Bird.extend(null, function(base) {
                 // problem. The `describe` method comes in handy. It's still kind-of wonky, but this
                 // seems better than `Bird.prototype.describe('instanceDefaults').get.call(this)`.
                 var inherited = base.describe('instanceDefaults').get.call(this);
+
+                // More on `CoreObject.assign` below.
                 return Penguin.assign(inherited, {
                     name: 'Feathers McGraw'
                 });
@@ -93,7 +95,7 @@ console.log('penguin1.name:', penguin1.name);   // penguin1.name: Chilly Willy
 `CoreObject` has 3 static methods: `extend`, `create`, and `assign`. These methods are automatically copied over to it's 'subclasses' (that is, to constructor functions who's prototypes have CoreObject's prototype in their prototype chains … ugh, JavaScript). Let's look at them:
 
 ##### `extend(staticProps, protoFn)`
-`CoreObject.extend` accepts two arguments, `staticProps` and `protoFn`, and returns a new constructor with the proper prototype chain wired up.
+`CoreObject.extend` is the main workhorse of inheritance in PalindromeJS. It accepts two arguments, `staticProps` and `protoFn`, and returns a new constructor with the proper prototype chain wired up.
 
 The first argument, `staticProps` is a plain object containing key value pairs. Values can be 'regular' JavaScript types (Array, Boolean, Date, Function, Number, Object, RegExp, or String) or property descriptors (either data descriptors or accessor descriptors). In either case the whole object is converted into an object of property descriptors that are mixed in with the super constructor's own properties, and then defined on the new constructor via [Object.defineProperties](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties). By mixing in the super constructor's own properties, any constructor that inherits from `CoreObject` automatically gets the `extend`, `create`, and `assign` functionality.
 
