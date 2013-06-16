@@ -115,7 +115,7 @@ var Person = CoreObject.extend(null, function(base) {
         instanceDefaults: {
             get: function() {
                 var inherited = base.describe('instanceDefaults').get.call(this);
-                return Person.assign(inherited, { // <- as noted, assign is defined on all subclasses of CoreObject
+                return Person.assign(inherited, { // <- assign is defined on CoreObject subclasses
                     fname: 'John',
                     lname: 'Doe',
                     fullName: {
