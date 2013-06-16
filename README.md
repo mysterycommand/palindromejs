@@ -90,9 +90,9 @@ penguin1.speak();                               // Chirp chirp from [penguin1 Pe
 console.log('penguin1.name:', penguin1.name);   // penguin1.name: Chilly Willy
 ```
 
-#### Details:
+#### Details (CoreObject Constructor Methods):
 
-CoreObject has 3 static methods: `extend`, `create`, and `assign`. These methods are automatically copied over to it's 'subclasses' (that is, to constructor functions who's prototypes have CoreObject's prototype in their prototype chains … ugh, JavaScript). Let's look at them:
+`CoreObject` has 3 static methods: `extend`, `create`, and `assign`. These methods are automatically copied over to it's 'subclasses' (that is, to constructor functions who's prototypes have CoreObject's prototype in their prototype chains … ugh, JavaScript). Let's look at them:
 
 ##### `extend(staticProps, protoFn)`
 `CoreObject.extend` accepts two arguments, `staticProps` and `protoFn`, and returns a new constructor with the proper prototype chain wired up.
@@ -107,4 +107,29 @@ The second argument, `protoFn` is a function that returns an object. The functio
 The argument `instanceProps` is converted to a property descriptors object and then defined on the new instance via [Object.create](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create).
 
 ##### `assign(/* ...sources */)`
-`CoreObject.assign` accepts any number of sources, and returns a new object that is the accumulated property own descriptors of those sources.
+`CoreObject.assign` accepts any number of sources, and returns a new object that is the accumulated own property descriptors of those sources. It's used mostly by the internals of the `extend` method, but also comes in handy when trying to access overridden getters and setters. For example, `CoreObject` has a spectial getter defined on it's prototype `instanceDefaults` that creates an instance id and name for any instance created from any subclass of `CoreObject`. It will sometimes be desireable to provide a constructor with it's own instance defaults, but also invoke the overridden getter. That is acheived like this:
+
+```javascript
+var Person = CoreObject.extend(null, function(base) {
+    return {
+        instanceDefaults: {
+            get: function() {
+                var inherited = base.describe('instanceDefaults').get.call(this);
+                return Person.assign(inherited, { // <- as noted, assign is defined on all subclasses of CoreObject
+                    fname: 'John',
+                    lname: 'Doe',
+                    fullName: {
+                        get: function() {
+                            return this.fname + ' ' + this.lname;
+                        }
+                    }
+                });
+            }
+        }
+    };
+});
+```
+
+#### Details (CoreObject Prototype Methods):
+
+`CoreObject` has 5 methods, and 3 getters attached to it's prototype.
