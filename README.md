@@ -8,13 +8,12 @@ Palindrome JS is an MVCVM framework … that's right, Model, View, Controller, 
 
 [Problem No. 1: Inheritance](https://github.com/mysterycommand/palindromejs/wiki/Problem-No.-1:-Inheritance) — SOLVED!
 
-#### Basics:
+#### Basic Usage:
 
 ```javascript
 var Animal = CoreObject.extend(null, function(base) {
     return {
-        // The user is encouraged to name their constructors, as it will make for a more meaningful
-        // toString method as we'll see in a few lines.
+        // Naming your constructor will make toString actually meaningful.
         constructor: function Animal(instanceProps) {
             base.constructor.call(this, instanceProps);
         },
@@ -49,13 +48,12 @@ console.log('');
 var Penguin = Bird.extend(null, function(base) {
     return {
         instanceDefaults: {
-            // The instanceDefaults 'getter' is a special property of CoreObject. The object returned
-            // from this method will be merged into any new instance. Be sure to call the base class's
-            // instanceDefaults though. CoreObject uses it to create a unique id and name for instances
-            // of it's subclasses.
+            // The instanceDefaults getter is special. Properties of the object returned by this method
+            // will be merged into any new instance. Be sure to call the base class's instanceDefaults.
             get: function() {
-                // Calling the "super" of a 'getter' method is kind-of wonky in JavaScript, but this is
-                // far better than what I started out with ... aaahhh JavaScript.
+                // Calling `base.instanceDefaults` won't work here because of the usual this/context
+                // problem. The `describe` method comes in handy. It's still kind-of wonky, but this
+                // seems better than `Bird.prototype.describe('instanceDefaults').get.call(this)`.
                 var inherited = base.describe('instanceDefaults').get.call(this);
                 return Penguin.assign(inherited, {
                     name: 'Feathers McGraw'
@@ -77,7 +75,7 @@ var Penguin = Bird.extend(null, function(base) {
     };
 });
 var penguin = Penguin.create();
-penguin.speak();                                // Chirp chirp from [penguin0 Penguin]
+penguin.speak();                                // Weird squawking noise from [penguin0 Penguin]
 console.log(penguin.can('fly'));                // true // ... uh, yeah, that's a semantics problem
 penguin.fly();                                  // I don't fly. Swim?
 penguin.swim();                                 // Flap flap!
@@ -86,11 +84,11 @@ console.log('');
 
 // Passing an object into the create call will override instanceDefaults.
 var penguin1 = Penguin.create({ name: 'Chilly Willy' });
-penguin1.speak();                               // Chirp chirp from [penguin1 Penguin]
+penguin1.speak();                               // Weird squawking noise from [penguin1 Penguin]
 console.log('penguin1.name:', penguin1.name);   // penguin1.name: Chilly Willy
 ```
 
-#### Details (CoreObject Constructor Methods):
+#### CoreObject Constructor Methods:
 
 `CoreObject` has 3 static methods: `extend`, `create`, and `assign`. These methods are automatically copied over to it's 'subclasses' (that is, to constructor functions who's prototypes have CoreObject's prototype in their prototype chains … ugh, JavaScript). Let's look at them:
 
