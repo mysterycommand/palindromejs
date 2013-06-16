@@ -92,19 +92,27 @@ console.log('penguin1.name:', penguin1.name);   // penguin1.name: Chilly Willy
 
 #### CoreObject Constructor Methods:
 
-`CoreObject` has 3 static methods: `extend`, `create`, and `assign`. These methods are automatically copied over to it's 'subclasses' (that is, to constructor functions who's prototypes have CoreObject's prototype in their prototype chains … ugh, JavaScript). Let's look at them:
+`CoreObject` has 3 static methods: `extend`, `create`, and `assign`. These methods are automatically copied over to it's 'subclasses' (that is, to constructor functions who's prototypes have CoreObject's prototype in their prototype chains … ugh, JavaScript).
+
+The main thing to keep in mind is that under the hood these methods build up property descriptors objects and then define properties on their targets using ES5 methods (generally [Object.create](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create) and [Object.defineProperties](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties)). Objects passed in as `staticProps` or `instanceProps` or returned by `protoFn` can be complete or partial property descriptors or just plain objects. By using these methods, it's possible to create psuedo-public (that is configurable and enumerable) getter/setter pairs (or getter [that is read] only members), with psuedo-private (that is non-configurable and non-enumerable) data members, as well as const-like (non-configurable, non-enumerable, and non-writable) members.
+
+> Development note: contrary to the ES5 spec, property descriptors built up by `CoreObject` have `configurable`, `enumerable` (and maybe `writable`) keys who's values default to `true`. While it deviates from the spec, I believe this is the path of least astonishment. Described properties default to being pseudo-public (that is enumerable and configurable [and maybe writable]) … it's up to the implementor to lock down properties by setting these flags to `false` when necessary.
+
+Anyway, let's look at them:
 
 ##### `extend(staticProps, protoFn)`
 `CoreObject.extend` is the main workhorse of inheritance in PalindromeJS. It accepts two arguments, `staticProps` and `protoFn`, and returns a new constructor with the proper prototype chain wired up.
 
-The first argument, `staticProps` is a plain object containing key value pairs. Values can be 'regular' JavaScript types (Array, Boolean, Date, Function, Number, Object, RegExp, or String) or property descriptors (either data descriptors or accessor descriptors). In either case the whole object is converted into an object of property descriptors that are mixed in with the super constructor's own properties, and then defined on the new constructor via [Object.defineProperties](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties). By mixing in the super constructor's own properties, any constructor that inherits from `CoreObject` automatically gets the `extend`, `create`, and `assign` functionality.
+The first argument, `staticProps` is a plain object containing key value pairs. Values can be 'regular' JavaScript types (Array, Boolean, Date, Function, Number, Object, RegExp, or String) or property descriptors (either data descriptors or accessor descriptors [as described by the [Object.defineProperty](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties) on MDN]). In either case the whole object is converted into a property descriptors object. These are then mixed in with the base constructor's own properties, and then defined on the new constructor via [Object.defineProperties](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties). By mixing in the base constructor's own properties, any constructor that inherits from `CoreObject` automatically gets the `extend`, `create`, and `assign` functionality.
 
-The second argument, `protoFn` is a function that returns an object. The function is passed a reference to the super constructor's prototype, for use as a kind-of 'super' (though by my own convention it's called `base`). All of the properties of the object returned by this function are first converted into a property descriptors object and then copied onto the new constructor's prototype. The idea to pass the super constructor's prototype came from [LinkedIn's Fiber](https://github.com/linkedin/Fiber) library, and [DotNetWise's FastClass](https://github.com/dotnetwise/Javascript-FastClass) implementation of a similar concept. I haven't done performance tests (yet), but I'd guess that because of my implementation's reliance on `Object.create`, `Object.defineProperties`, `Object.defineProperty`, `Object.getOwnPropertyDescriptor`, and `Object.keys` (and maybe some other ES5 'native' methods) that mine's significantly slower ([not to mention completely incompatible with version of IE less than 9](http://kangax.github.io/es5-compat-table/)).
+The second argument, `protoFn` is a function that returns an object. The function is passed a reference to the base constructor's prototype, for use as a kind-of 'super' (though by my own convention it's called `base`). All of the properties of the object returned by this function are converted into a property descriptors object and then copied onto the new constructor's prototype via [Object.create](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create).
+
+> Development note: the idea to pass the super constructor's prototype came from [LinkedIn's Fiber](https://github.com/linkedin/Fiber) library, and [DotNetWise's FastClass](https://github.com/dotnetwise/Javascript-FastClass) implementation of a similar concept. I haven't done performance tests (yet), but I'd guess that because of my implementation's reliance on browser-native ES5 methods (`Object.create`, `Object.defineProperties`, `Object.defineProperty`, `Object.getOwnPropertyDescriptor`, `Object.keys`, as well as `Array.filter`, `Array.forEach`, `Array.some`) that mine's significantly slower (not to mention [incompatible with version of IE less than 9](http://kangax.github.io/es5-compat-table/)).
 
 ##### `create(instanceProps)`
-`CoreObject.create` accepts a single argument, `instanceProps`, and returns a new instance the constructor from which it's called (remember that `create` is copied onto any subclass of `CoreObject`). At the moment, it's functionally equivalent to using `new CoreObject(instanceProps)`. However, use of `create` is encouraged, as it may be used later to provide additional funcitonality to the inheritance system.
+`CoreObject.create` accepts a single argument, `instanceProps`, and returns a new instance the constructor from which it's called (remember that `create` is copied onto any subclass of `CoreObject`). At the moment, it's functionally equivalent to using `new CoreObject(instanceProps)`. However, use of `create` is encouraged, as it may be used later to provide additional funcitonality to the inheritance system. Also, it has a nice kind-of parity with `CoreObject.extend`.
 
-The argument `instanceProps` is converted to a property descriptors object and then defined on the new instance via [Object.create](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create).
+The argument `instanceProps` is converted to a property descriptors object and then defined on the new instance via [Object.defineProperties](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties).
 
 ##### `assign(/* ...sources */)`
 `CoreObject.assign` accepts any number of sources, and returns a new object that is the accumulated own property descriptors of those sources. It's used mostly by the internals of the `extend` method, but also comes in handy when trying to access overridden getters and setters. For example, `CoreObject` has a spectial getter defined on it's prototype `instanceDefaults` that creates an instance id and name for any instance created from any subclass of `CoreObject`. It will sometimes be desireable to provide a constructor with it's own instance defaults, but also invoke the overridden getter. In the example below, `person.toString` is still useful because `CoreObject`'s instance defaults were inherited correctly:
@@ -115,7 +123,7 @@ var Person = CoreObject.extend(null, function(base) {
         instanceDefaults: {
             get: function() {
                 var inherited = base.describe('instanceDefaults').get.call(this);
-                return Person.assign(inherited, { // <- assign is defined on all CoreObject subclasses
+                return Person.assign(inherited, { // <- assign is defined on all CoreObject heir classes
                     fname: 'John',
                     lname: 'Doe',
                     fullName: {
@@ -140,6 +148,6 @@ console.log(person1.fullName, person1.toString());  // Italo Calvino [person1 Pe
 console.log('');
 ```
 
-#### Details (CoreObject Prototype Methods):
+#### CoreObject Prototype Methods:
 
 `CoreObject` has 5 methods, and 3 getters attached to it's prototype.
