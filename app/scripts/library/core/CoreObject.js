@@ -150,9 +150,14 @@ define([
              * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor
              */
             describe: function(key) {
-                return (!! key)
-                    ? Object.getOwnPropertyDescriptor(this, key)
-                    : getDescriptors(this);
+                if (!! key) {
+                    var obj = this;
+                    while (! obj.hasOwnProperty(key)) {
+                        obj = Object.getPrototypeOf(obj);
+                    }
+                    return Object.getOwnPropertyDescriptor(obj, key);
+                }
+                return getDescriptors(this);
             },
 
             /**

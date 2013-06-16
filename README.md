@@ -28,7 +28,7 @@ var Bird = Animal.extend(null, function(base) {
             base.constructor.call(this);
         },
         speak: function() {
-            console.log('Squak from', this.toString());
+            console.log('Chirp chirp from', this.toString());
         },
         fly: function() {
             console.log('Flap flap!');
@@ -36,6 +36,37 @@ var Bird = Animal.extend(null, function(base) {
     };
 });
 var bird = Bird.create();
-bird.speak(); // Squak from [bird0 Bird]
+bird.speak(); // Chirp chirp from [bird0 Bird]
 console.log(bird.can('fly')); // true
+bird.fly(); // Flap flap!
+
+var Penguin = Bird.extend(null, function(base) {
+    return {
+        instanceDefaults: {
+            get: function() {
+                var inherited = base.describe('instanceDefaults').get.call(this);
+                return Penguin.assign(inherited, {
+                    name: 'Feathers McGraw'
+                });
+            }
+        },
+        constructor: function Penguin() {
+            base.constructor.call(this);
+        },
+        speak: function() {
+            console.log('Chirp chirp from', this.toString());
+        },
+        fly: function() {
+            console.log('I don\'t fly. Swim?');
+        },
+        swim: function() {
+            base.fly.call(this);
+        }
+    };
+});
+var penguin = Penguin.create();
+penguin.speak(); // Chirp chirp from [penguin0 Penguin]
+console.log(penguin.can('fly')); // true // ... uh, yeah, that's a semantics problem
+penguin.fly(); // I don't fly. Swim?
+penguin.swim(); // Flap flap!
 ```
