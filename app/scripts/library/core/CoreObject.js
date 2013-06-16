@@ -140,7 +140,9 @@ define([
             },
 
             /**
-             * Use describe to get own propery descriptors from an instance. Calling describe without arguments will
+             * Use describe to get propery descriptors. The function will look in 'this' first, and then "crawl" up
+             * the prototype chain until it finds the property with the name passed in key. The function will return
+             * null if no property with the passed in name can be fount. Calling describe without arguments will
              * return an object with all property descriptors for this instance.
              *
              * @param  {String} key The property name to describe, or undefined (in which case all own properties
@@ -152,18 +154,22 @@ define([
             describe: function(key) {
                 if (!! key) {
                     var obj = this;
-                    while (! obj.hasOwnProperty(key)) {
+                    while (!! obj && ! obj.hasOwnProperty(key)) {
                         obj = Object.getPrototypeOf(obj);
                     }
-                    return Object.getOwnPropertyDescriptor(obj, key);
+
+                    return (!! obj)
+                        ? Object.getOwnPropertyDescriptor(obj, key)
+                        : null;
                 }
                 return getDescriptors(this);
             },
 
             /**
              * Use define to define properties (via [provided or generated] property descriptor object) to instances.
-             * @param  {...}     arguments  One or more objects to be converted to property descriptors and then defined on
-             *                              this instance.
+             *
+             * @param  {...}     arguments  One or more objects to be converted to property descriptors and then
+             *                              defined on this instance.
              * @return {Object}             The object with it's new properties defined.
              */
             define: function() {
