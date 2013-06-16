@@ -152,4 +152,34 @@ console.log('');
 
 #### CoreObject Prototype Methods:
 
-`CoreObject` has 5 methods, and 3 getters attached to it's prototype.
+`CoreObject` has 5 methods: `can`, `has`, `describe`, `define`, and `toString`, and 3 getters: `instanceDefaults`, `instanceId`, and `instanceName`, attached to it's prototype.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
