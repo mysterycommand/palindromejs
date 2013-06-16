@@ -154,6 +154,23 @@ console.log('');
 
 `CoreObject` has 5 methods: `can`, `has`, `describe`, `define`, and `toString`, and 3 getters: `instanceDefaults`, `instanceId`, and `instanceName`, attached to it's prototype.
 
+##### `can(key)`
+
+##### `has(key)`
+
+##### `describe(key)`
+
+##### `define(/* ...sources */)`
+
+##### `toString()`
+
+##### `instanceDefaults`
+
+##### `instanceId`
+
+##### `instanceName`
+
+
 
 
 
