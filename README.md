@@ -95,7 +95,10 @@ console.log('penguin1.name:', penguin1.name);   // penguin1.name: Chilly Willy
 CoreObject has 3 static methods: `extend`, `create`, and `assign`. These methods are automatically copied over to it's 'subclasses' (that is, to constructor functions who's prototypes have CoreObject's prototype in their prototype chains … ugh, JavaScript). Let's look at them:
 
 ##### `extend(staticProps, protoFn)`
+`CoreObject.extend` accepts two arguments, `staticProps` and `protoFn`.
 
 ##### `create(instanceProps)`
+`CoreObject.create` accepts a single argument, `instanceProps`.
 
 ##### `assign(/* ...sources */)`
+`CoreObject.assign` accepts any number of sources, and returns a new object that is the accumulated property own descriptors of those sources.
