@@ -107,7 +107,7 @@ The second argument, `protoFn` is a function that returns an object. The functio
 The argument `instanceProps` is converted to a property descriptors object and then defined on the new instance via [Object.create](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create).
 
 ##### `assign(/* ...sources */)`
-`CoreObject.assign` accepts any number of sources, and returns a new object that is the accumulated own property descriptors of those sources. It's used mostly by the internals of the `extend` method, but also comes in handy when trying to access overridden getters and setters. For example, `CoreObject` has a spectial getter defined on it's prototype `instanceDefaults` that creates an instance id and name for any instance created from any subclass of `CoreObject`. It will sometimes be desireable to provide a constructor with it's own instance defaults, but also invoke the overridden getter. That is acheived like this:
+`CoreObject.assign` accepts any number of sources, and returns a new object that is the accumulated own property descriptors of those sources. It's used mostly by the internals of the `extend` method, but also comes in handy when trying to access overridden getters and setters. For example, `CoreObject` has a spectial getter defined on it's prototype `instanceDefaults` that creates an instance id and name for any instance created from any subclass of `CoreObject`. It will sometimes be desireable to provide a constructor with it's own instance defaults, but also invoke the overridden getter. In the example below, `person.toString` is still useful because `CoreObject`'s instance defaults were inherited correctly:
 
 ```javascript
 var Person = CoreObject.extend(null, function(base) {
@@ -115,7 +115,7 @@ var Person = CoreObject.extend(null, function(base) {
         instanceDefaults: {
             get: function() {
                 var inherited = base.describe('instanceDefaults').get.call(this);
-                return Person.assign(inherited, { // <- assign is defined on CoreObject subclasses
+                return Person.assign(inherited, { // <- assign is defined on all CoreObject subclasses
                     fname: 'John',
                     lname: 'Doe',
                     fullName: {
@@ -131,6 +131,13 @@ var Person = CoreObject.extend(null, function(base) {
         }
     };
 });
+var person = Person.create();
+console.log(person.fullName, person.toString());    // John Doe [person0 Person]
+console.log('');
+
+var person1 = Person.create({ fname: 'Italo', lname: 'Calvino' });
+console.log(person1.fullName, person1.toString());  // Italo Calvino [person1 Person]
+console.log('');
 ```
 
 #### Details (CoreObject Prototype Methods):
