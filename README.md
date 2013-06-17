@@ -181,7 +181,7 @@ A read-only accessor for a unique identifier created for each instance of a part
 ##### `instanceName`
 A read-only accessor for a unique name created for each instance of a particular constructor. Takes the form of `this.constructor.name.substring(0, 1).toLowerCase() + this.constructor.name.substring(1) + this.instanceId` (e.g. `coreObject0` or `person13` etc.).
 
-## More soon … 
+## More soon …
 
 
 
