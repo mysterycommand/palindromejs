@@ -8,13 +8,11 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
         <title></title>
-
         <meta name="description" content="">
-        <!-- <meta name="viewport" content="width=device-width"> -->
 
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        <meta name="viewport" content="width=320.1, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="viewport" content="initial-scale=1, user-scalable=no">
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <link rel="stylesheet" href="styles/main.css">
@@ -24,8 +22,7 @@
         <!-- endbuild -->
     </head>
     <body>
-        <div id="js-app" class="app container"></div>
-        <!-- <div id="js-test" class="container"></div> -->
+        <main id="js-main" class="container" role="main"></main>
 
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
@@ -41,7 +38,8 @@
         </script>
         -->
 
+        <!-- build:replace <script src="scripts/app.min.js"></script> -->
         <script data-main="scripts/config" src="bower_components/requirejs/require.js"></script>
-        <!-- <script src="scripts/app.min.js"></script> -->
+        <!-- endbuild -->
     </body>
 </html>

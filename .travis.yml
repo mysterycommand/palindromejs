@@ -24,7 +24,7 @@ env:
         # travis encrypt GH_OAUTH_TOKEN=XXXXXXXXXXXXXXX
         #
         # User specific env variables
-        - secure: "F3vS2enjRnl/2xNSCvwZGlF4m+z0Np89YDi/kL2DJC8+YmP6bxd7QxMKAQWOpkJsMZ8ycQ9SFl7epqNJnkqBcT9+xhZMOBfDWIsivxuq6BPeDPvwAXfHtkKLI6kib9wtUlz0JJxFKnYvBD4A9BJ2xlD4TSqw+/bJtSSbx3k6das="
+        - secure: "CkIWcEth9kLP4/4uHalnIkzrD5Z8vej2sYarCRNqnmweubw5uwlR6OrdeD6OzfQqPxZDW+xudAOaNrPqwFkeQtMnAefHDrYLu1sHW7a/Fy9n1PGbQ2z9aNd7qiOl34j2u00C1JrNgnjzQKQNXTc0p55gTR+gHhWBM9qcl9Qvn7A="
         - GH_OWNER: mysterycommand
         - GH_PROJECT_NAME: palindromejs
         # This .travis.yml file instructs travis-ci.org to build your master branch using `yeoman build`
@@ -43,7 +43,6 @@ after_success:
     # Any command that using GH_OAUTH_TOKEN must pipe the output to /dev/null to not expose your oauth token
     - git submodule add -b gh-pages https://${GH_OAUTH_TOKEN}@github.com/${GH_OWNER}/${GH_PROJECT_NAME} site > /dev/null 2>&1
     - cd site
-    - node ../app/scripts/util/cleanup.js ../dist/index.html
     - if git checkout gh-pages; then git checkout -b gh-pages; fi
     - git rm -r .
     - cp -R ../dist/* .
@@ -51,6 +50,6 @@ after_success:
     - git add -f .
     - git config user.email "matt@mysterycommand.com"
     - git config user.name "Matt Hayes"
-    - git commit -am "Adding the yeoman build files to gh-pages."
+    - git commit -am "adding the yeoman build files to gh-pages [ci skip]"
     # Any command that using GH_OAUTH_TOKEN must pipe the output to /dev/null to not expose your oauth token
     - git push https://${GH_OAUTH_TOKEN}@github.com/${GH_OWNER}/${GH_PROJECT_NAME} HEAD:gh-pages > /dev/null 2>&1

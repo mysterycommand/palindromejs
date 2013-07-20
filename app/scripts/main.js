@@ -10,25 +10,24 @@
 require([
 
     'jquery',
-    'library/core/CoreObject',
+    // 'library/core/CoreObject',
     'App'
 
 ], function (
 
     $,
-    CoreObject,
+    // CoreObject,
     App
 
 ) {
 
     'use strict';
-    if (window.$) { window.$.noConflict(); }
-    if (window.jQuery) { window.jQuery.noConflict(); }
-    // if (window._) { window._.noConflict(); }
+    if (window.$) { window.$.noConflict(true); }
+    if (window._) { window._.noConflict(); }
 
     $(function() {
         var app = App.create();
-        // console.log(app.toString());
+        console.log(app.toString());
     });
 });
 

@@ -75,7 +75,6 @@ module.exports = function (grunt) {
                     middleware: function (connect) {
                         return [
                             mountFolder(connect, '.tmp'),
-                            // mountFolder(connect, 'test')
                             mountFolder(connect, '.')
                         ];
                     }
@@ -123,8 +122,6 @@ module.exports = function (grunt) {
         mocha: {
             all: {
                 options: {
-                    // run: true,
-                    // urls: ['http://localhost:<%= connect.options.port %>/index.html']
                     run: false,
                     reporter: 'Spec',
                     urls: ['http://localhost:<%= connect.options.port %>/test/index.html']
@@ -181,8 +178,8 @@ module.exports = function (grunt) {
                 // Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
                 options: {
                     // `name` and `out` is set by grunt-usemin
-                    baseUrl: yeomanConfig.app + '/scripts',
-                    optimize: 'none',
+                    baseUrl: '<%= yeoman.app %>/scripts',
+                    optimize: 'uglify',
                     // TODO: Figure out how to make sourcemaps work with grunt-usemin
                     // https://github.com/yeoman/grunt-usemin/issues/30
                     //generateSourceMaps: true,
@@ -194,8 +191,8 @@ module.exports = function (grunt) {
                     //uglify2: {} // https://github.com/mishoo/UglifyJS2
                     //
                     include: '../bower_components/requirejs/require',
-                    mainConfigFile: yeomanConfig.app + '/scripts/config.js',
-                    out: yeomanConfig.dist + '/scripts/app.min.js'
+                    mainConfigFile: '<%= yeoman.app %>/scripts/config.js',
+                    out: '<%= yeoman.dist %>/scripts/app.min.js'
                 }
             }
         },
@@ -224,6 +221,9 @@ module.exports = function (grunt) {
             html: ['<%= yeoman.dist %>/{,*/}*.html'],
             css: ['<%= yeoman.dist %>/styles/{,*/}*.css']
         },
+        usereplace: {
+            html: '<%= yeoman.dist %>/index.html'
+        },
         imagemin: {
             dist: {
                 files: [{
@@ -248,6 +248,7 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     '<%= yeoman.dist %>/styles/main.css': [
+                        '<%= yeoman.app %>/bower_components/normalize-css/normalize.css',
                         '.tmp/styles/{,*/}*.css',
                         '<%= yeoman.app %>/styles/{,*/}*.css'
                     ]
@@ -284,7 +285,7 @@ module.exports = function (grunt) {
                     cwd: '<%= yeoman.app %>',
                     dest: '<%= yeoman.dist %>',
                     src: [
-                        '*.{ico,txt}',
+                        '*.{ico,txt,png}',
                         '.htaccess',
                         'images/{,*/}*.{webp,gif}',
                         'styles/fonts/*'
@@ -321,7 +322,6 @@ module.exports = function (grunt) {
                 exclude: ['modernizr']
             },
             all: {
-                // rjsConfig: '<%= yeoman.app %>/scripts/main.js'
                 rjsConfig: '<%= yeoman.app %>/scripts/config.js'
             }
         }
@@ -358,7 +358,8 @@ module.exports = function (grunt) {
         'uglify',
         'copy',
         'rev',
-        'usemin'
+        'usemin',
+        'usereplace'
     ]);
 
     grunt.registerTask('default', [
