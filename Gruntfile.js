@@ -189,6 +189,11 @@ module.exports = function (grunt) {
                     useStrict: true,
                     wrap: true,
                     //uglify2: {} // https://github.com/mishoo/UglifyJS2
+                    uglify: {
+                        // beautify: true,
+                        /* 'mangle' removes names from functions, which CoreObject uses for more useful toString. */
+                        'no_mangle': true
+                    },
                     //
                     include: '../bower_components/requirejs/require',
                     mainConfigFile: '<%= yeoman.app %>/scripts/config.js',

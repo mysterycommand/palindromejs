@@ -10,13 +10,13 @@
 require([
 
     'jquery',
-    // 'library/core/CoreObject',
+    'library/core/CoreObject',
     'App'
 
 ], function (
 
     $,
-    // CoreObject,
+    CoreObject,
     App
 
 ) {
@@ -28,6 +28,9 @@ require([
     $(function() {
         var app = App.create();
         console.log(app.toString());
+
+        var co = CoreObject.create();
+        console.log(co.toString());
     });
 });
 
