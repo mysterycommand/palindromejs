@@ -181,7 +181,73 @@ A read-only accessor for a unique identifier created for each instance of a part
 ##### `instanceName`
 A read-only accessor for a unique name created for each instance of a particular constructor. Takes the form of `this.constructor.name.substring(0, 1).toLowerCase() + this.constructor.name.substring(1) + this.instanceId` (e.g. `coreObject0` or `person13` etc.).
 
-## More soon …
+## Problem #2: Routing
+
+An ideal API?:
+
+```javascript
+var router = Router.create({
+    routes: {
+        '/': Route.create({
+            enter: function() {
+                // Do stuff.
+            },
+            exit: function() {
+                // Clean up.
+            }
+        }),
+        '/about': Route.create({
+            enter: function() {
+                // Do stuff.
+            },
+            exit: function() {
+                // Clean up.
+            }
+        }),
+        '/all/posts': Route.create({
+            enter: function() {
+                // Do stuff.
+            },
+            exit: function() {
+                // Clean up.
+            }
+        }),
+        '/post/:id': Route.create({
+            enter: function() {
+                // Do stuff.
+            },
+            exit: function() {
+                // Clean up.
+            }
+        }),
+        '/new/post': Route.create({
+            enter: function() {
+                // Do stuff.
+            },
+            exit: function() {
+                // Clean up.
+            }
+        }),
+        '/edit/post/:id': Route.create({
+            enter: function() {
+                // Do stuff.
+            },
+            exit: function() {
+                // Clean up.
+            }
+        }),
+        '/delete/post/:id': Route.create({
+            enter: function() {
+                // Do stuff.
+            },
+            exit: function() {
+                // Clean up.
+            }
+        })
+    }
+});
+router.transitionTo('/');
+```
 
 
 

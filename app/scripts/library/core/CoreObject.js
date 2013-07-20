@@ -5,7 +5,7 @@
  * @author Matt Hayes <matt@mysterycommand.com>
  * @version 0.0.1
  *
- * @copyright Copyright (c) 2013, Matt Hayes, (occationally) dba Mystery Command
+ * @copyright Copyright (c) 2013, Matt Hayes, (occasionally) dba Mystery Command
  * All rights reserved.
  *
  * @license <a href="http://en.wikipedia.org/wiki/BSD_licenses">FreeBSD License</a> Redistribution and use in source
