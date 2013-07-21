@@ -18,7 +18,7 @@ require.config({
         // Point spec and test/spec.
         spec: '../../test/spec',
         runner: '../../test/spec/runner',
-        appConfig: '../../app/scripts/config'
+        appConfig: 'config'
     },
 
     // Require in test/spec/runner to start the mocha runner.
