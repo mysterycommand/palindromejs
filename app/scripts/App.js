@@ -38,30 +38,61 @@ define([
             constructor: function App(instanceProps) {
                 base.constructor.call(this, instanceProps);
 
-                var particle = Particle.create();
-                console.log(particle.toString());
-                console.log(Particle.GRAVITY.toString());
-
                 var field = Field.create();
-                console.log(field.toString());
-                console.log(field.container);
+
+                var mouseX = 480;
+                var mouseY = 270;
+                field.container.addEventListener('mousemove', function(event) {
+                    mouseX = event.clientX;
+                    mouseY = event.clientY;
+                });
 
                 field.addCreateEffect(Command.create({
                     target: field,
                     fn: function() {
-                        var f = this.target;
-                        // var p;
-                        // while ((p = f.particlePool.acquire()) !== null) {
-                        var p = f.particlePool.acquire();
+                        var particles = this.target.particles;
+                        var pool = this.target.particlePool;
+                        var p;
+                        // Trying to put all the particles on the screen at once doesn't seem to work.
+                        // while ((p = pool.acquire()) !== null) {
+                        //     p.pos.x = mouseX;
+                        //     p.pos.y = mouseY;
+                        //     p.vel.x = (Math.random() * 10) - 5;
+                        //     p.vel.y = (Math.random() * 10) - 5;
+                        //     p.sprite.style.display = 'block';
+                        //     p.sprite.style.visibility = 'visible';
+                        //     particles.push(p);
+                        // }
+                        p = pool.acquire();
                         if (p !== null) {
-                            p.pos.x = 480;
-                            p.pos.y = 270;
+                            p.pos.x = mouseX;
+                            p.pos.y = mouseY;
                             p.vel.x = (Math.random() * 10) - 5;
                             p.vel.y = (Math.random() * 10) - 5;
                             p.sprite.style.display = 'block';
                             p.sprite.style.visibility = 'visible';
-                            f.particles.push(p);
+                            particles.push(p);
                         }
+                        // p = pool.acquire();
+                        // if (p !== null) {
+                        //     p.pos.x = mouseX;
+                        //     p.pos.y = mouseY;
+                        //     p.vel.x = (Math.random() * 10) - 5;
+                        //     p.vel.y = (Math.random() * 10) - 5;
+                        //     p.sprite.style.display = 'block';
+                        //     p.sprite.style.visibility = 'visible';
+                        //     particles.push(p);
+                        // }
+                        // p = pool.acquire();
+                        // if (p !== null) {
+                        //     p.pos.x = mouseX;
+                        //     p.pos.y = mouseY;
+                        //     p.vel.x = (Math.random() * 10) - 5;
+                        //     p.vel.y = (Math.random() * 10) - 5;
+                        //     p.sprite.style.display = 'block';
+                        //     p.sprite.style.visibility = 'visible';
+                        //     particles.push(p);
+                        // }
                     }
                 }));
 
@@ -77,9 +108,6 @@ define([
                             p = particles[i];
                             p.update();
                         }
-                        // console.log(this.target.toString());
-                        // console.log('  particles', particles.length);
-                        // console.log('  pooled', pool.currentSize);
                     }
                 }));
 
@@ -113,22 +141,21 @@ define([
                 var code = document.getElementById('js-code');
                 var debug;
 
-                function update(time) {
-                    window.requestAnimationFrame(render);
-                    field.update();
-                }
-
-                function render(time) {
-                    window.requestAnimationFrame(update);
-                    field.render();
-
-                    debug = document.createTextNode('particles: ' + field.particles.length);
-                    if (code.firstChild) {
-                        code.replaceChild(debug, code.firstChild);
-                    } else {
-                        code.appendChild(debug);
-                    }
-                }
+                // Running update/render in alternating frames doesn't appear to have any benefit.
+                // function update(time) {
+                //     window.requestAnimationFrame(render);
+                //     field.update();
+                // }
+                // function render(time) {
+                //     window.requestAnimationFrame(update);
+                //     field.render();
+                //     debug = document.createTextNode('particles: ' + field.particles.length);
+                //     if (code.firstChild) {
+                //         code.replaceChild(debug, code.firstChild);
+                //     } else {
+                //         code.appendChild(debug);
+                //     }
+                // }
 
                 function updateAndRender(time) {
                     window.requestAnimationFrame(updateAndRender);

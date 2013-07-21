@@ -86,9 +86,9 @@ define([
                 this.pos.plusEq(this.vel);
             },
             render: function() {
-                // this.sprite.style.webkitTransform = 'translate(' + this.pos.x + 'px, ' + this.pos.y + 'px)';
+                this.sprite.style.webkitTransform = 'translate(' + this.pos.x + 'px, ' + this.pos.y + 'px)';
                 //
-                this.sprite.style.webkitTransform = 'translate3d(' + this.pos.x + 'px, ' + this.pos.y + 'px, 0)';
+                // this.sprite.style.webkitTransform = 'translate3d(' + this.pos.x + 'px, ' + this.pos.y + 'px, 0)';
                 //
                 // var x = this.pos.x;
                 // var y = this.pos.y;

@@ -34,7 +34,7 @@ define([
                             enumerable: false,
                             value: Pool.create({
                                 Ctor: Particle,
-                                totalSize: 1000
+                                totalSize: 200
                             })
                         },
                         _particles: {
