@@ -60,8 +60,9 @@ define([
                 base.constructor.call(this, instanceProps);
                 if (this.sprite === null) {
                     this.sprite = document.createElement('div');
-                    this.sprite.style.width = 10 + 'px';
-                    this.sprite.style.height = 10 + 'px';
+                    var r = Math.round(Math.random() * 10) + 5;
+                    this.sprite.style.width = r + 'px';
+                    this.sprite.style.height = r + 'px';
                     this.sprite.style.position = 'absolute';
                     this.sprite.style.display = 'none';
                     this.sprite.style.visibility = 'hidden';
@@ -85,7 +86,20 @@ define([
                 this.pos.plusEq(this.vel);
             },
             render: function() {
-                this.sprite.style.webkitTransform = 'translate(' + this.pos.x + 'px, ' + this.pos.y + 'px)';
+                // this.sprite.style.webkitTransform = 'translate(' + this.pos.x + 'px, ' + this.pos.y + 'px)';
+                //
+                this.sprite.style.webkitTransform = 'translate3d(' + this.pos.x + 'px, ' + this.pos.y + 'px, 0)';
+                //
+                // var x = this.pos.x;
+                // var y = this.pos.y;
+                // this.sprite.style.webkitTransform = 'matrix3d(' + [
+                //     [1,0,0,0].join(','),
+                //     [0,1,0,0].join(','),
+                //     [0,0,1,0].join(','),
+                //     [x,y,0,1].join(',')
+                // ].join(',') + ')';
+                //
+                // this.sprite.style.webkitTransform = 'matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,' + this.pos.x + ',' + this.pos.y + ',0,1)';
             }
         };
     });

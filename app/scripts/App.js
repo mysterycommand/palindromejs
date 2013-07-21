@@ -50,6 +50,8 @@ define([
                     target: field,
                     fn: function() {
                         var f = this.target;
+                        // var p;
+                        // while ((p = f.particlePool.acquire()) !== null) {
                         var p = f.particlePool.acquire();
                         if (p !== null) {
                             p.pos.x = 480;
@@ -108,6 +110,9 @@ define([
                 //     field.render();
                 // }
 
+                var code = document.getElementById('js-code');
+                var debug;
+
                 function update(time) {
                     window.requestAnimationFrame(render);
                     field.update();
@@ -116,14 +121,29 @@ define([
                 function render(time) {
                     window.requestAnimationFrame(update);
                     field.render();
+
+                    debug = document.createTextNode('particles: ' + field.particles.length);
+                    if (code.firstChild) {
+                        code.replaceChild(debug, code.firstChild);
+                    } else {
+                        code.appendChild(debug);
+                    }
                 }
 
                 function updateAndRender(time) {
                     window.requestAnimationFrame(updateAndRender);
                     field.update();
                     field.render();
+
+                    debug = document.createTextNode('particles: ' + field.particles.length);
+                    if (code.firstChild) {
+                        code.replaceChild(debug, code.firstChild);
+                    } else {
+                        code.appendChild(debug);
+                    }
                 }
 
+                // window.requestAnimationFrame(update);
                 window.requestAnimationFrame(updateAndRender);
             }
         };
