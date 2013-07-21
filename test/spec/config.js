@@ -17,15 +17,14 @@ require.config({
     paths: {
         // Point spec and test/spec.
         spec: '../../test/spec',
-        runner: '../../test/spec/runner',
-        appConfig: 'config'
+        runner: '../../test/spec/runner'
     },
 
     // Require in test/spec/runner to start the mocha runner.
     deps: ['runner'],
     shim: {
         // Require in app/scripts/config to get the application & it's dependencies.
-        runner: ['appConfig']
+        runner: ['config']
     }
 
 });
