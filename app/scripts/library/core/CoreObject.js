@@ -130,7 +130,30 @@ define([
              * @param {Object} instanceProps An object who's properties will be copied onto the new instance.
              */
             constructor: function CoreObject(instanceProps) {
-                this.define(this.instanceDefaults, instanceProps || {});
+                var inst = {};
+                var sets = {};
+                var desc;
+
+                // This is probably not a great way to do this, but it will work for now:
+                // 1. Iterate over the 'instanceProps' passed in.
+                // 2. If a setter exists for that property name, store the value in the 'sets' hash.
+                // 3. Otherwise, put the value in the 'inst' hash.
+                Object.keys(instanceProps || {}).forEach(function(key) {
+                    desc = this.describe(key);
+                    if (desc && desc.set) {
+                        sets[key] = instanceProps[key];
+                    } else {
+                        inst[key] = instanceProps[key];
+                    }
+                }.bind(this));
+
+                // 4. Combine the 'inst' hash with 'instanceDefaults' and define them on the new instance.
+                this.define(this.instanceDefaults, inst);
+
+                // 5. Set the 'sets' hash on the new instance.
+                Object.keys(sets).forEach(function(key) {
+                    this[key] = sets[key];
+                }.bind(this));
             },
 
             // I like to declare 'public' data members after the constructor.
