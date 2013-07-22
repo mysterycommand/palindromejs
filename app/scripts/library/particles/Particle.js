@@ -60,8 +60,8 @@ define([
                 base.constructor.call(this, instanceProps);
                 if (this.sprite === null) {
                     this.sprite = document.createElement('div');
-                    var r = Math.round(Math.random() * 10) + 5;
-                    this.sprite.style.width = r + 'px';
+                    var r = Math.round(Math.random() * 5) + 5;
+                    this.sprite.style.width = (2 * r) + 'px';
                     this.sprite.style.height = r + 'px';
                     this.sprite.style.position = 'absolute';
                     this.sprite.style.display = 'none';
@@ -86,7 +86,7 @@ define([
                 this.pos.plusEq(this.vel);
             },
             render: function() {
-                this.sprite.style.webkitTransform = 'translate(' + this.pos.x + 'px, ' + this.pos.y + 'px)';
+                this.sprite.style.webkitTransform = 'translate(' + this.pos.x + 'px, ' + this.pos.y + 'px) rotate(' + (Math.atan2(this.vel.y, this.vel.x) * (180 / Math.PI)) + 'deg)';
                 //
                 // this.sprite.style.webkitTransform = 'translate3d(' + this.pos.x + 'px, ' + this.pos.y + 'px, 0)';
                 //
