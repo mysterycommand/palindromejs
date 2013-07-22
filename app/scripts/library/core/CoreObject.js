@@ -87,7 +87,7 @@ define([
          */
         extend: function(staticProps, protoFn) {
             return extend(this, staticProps, protoFn);
-        },
+        }
 
         // I like to put 'private static' members after 'public static' members, but I'm not super clear
         // on what 'private static' even means in JavaScript ... maybe just non-configurable and non-enumerable

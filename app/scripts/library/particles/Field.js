@@ -67,6 +67,7 @@ define([
             },
             constructor: function Field(instanceProps) {
                 base.constructor.call(this, instanceProps);
+                console.log(Particle.GRAVITY.toString());
                 if (this.container === null) {
                     this.container = document.getElementById('js-main');
                     this.container.style.width = 960 + 'px';

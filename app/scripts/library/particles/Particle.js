@@ -67,6 +67,14 @@ define([
                     this.sprite.style.display = 'none';
                     this.sprite.style.visibility = 'hidden';
                     this.sprite.style.background = randomHex();
+
+                    // console.log(this.sprite.style);
+                    var vendors = [
+                        'webkit',
+                        'ms'
+                    ];
+                    for (var i = 0; i < vendors.length && ! this.sprite.style.transform; ++i) {
+                    }
                 }
             },
             pos: {
@@ -86,7 +94,14 @@ define([
                 this.pos.plusEq(this.vel);
             },
             render: function() {
-                this.sprite.style.webkitTransform = 'translate(' + this.pos.x + 'px, ' + this.pos.y + 'px) rotate(' + (Math.atan2(this.vel.y, this.vel.x) * (180 / Math.PI)) + 'deg)';
+                var style = this.sprite.style;
+                var transform = 'translate(' + this.pos.x + 'px, ' + this.pos.y + 'px) rotate(' + (Math.atan2(this.vel.y, this.vel.x) * (180 / Math.PI)) + 'deg)';
+
+                style.webkitTransform = transform;
+                style.MozTransform = transform;
+                style.msTransform = transform;
+                style.OTransform = transform;
+                style.transform = transform;
                 //
                 // this.sprite.style.webkitTransform = 'translate3d(' + this.pos.x + 'px, ' + this.pos.y + 'px, 0)';
                 //
