@@ -69,8 +69,6 @@ define([
                 ? function Heir() { return Base.apply(this, arguments); }
                 : function Heir() {};
         }
-        // Function.name is non-standard, and not implemented in IE. This *should* fix it, but doesn't … not sure why.
-        if ( ! Heir.hasOwnProperty('name')) { Heir.name = Heir.toString().match(/function\s*(\w+)/)[1]; }
 
         Heir.prototype = Object.create(baseProto, getDescriptors(protoProps)); // Set up the prototype chain.
         return Object.defineProperties(Heir, assignDescriptors(baseStatics, staticProps)); // Assign static props.

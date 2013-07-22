@@ -12,7 +12,8 @@ require([
     'jquery',
     'App',
 
-    'library/util/polyfill/requestAnimationFrame'
+    'polyfill/Function.prototype.name',
+    'polyfill/window.requestAnimationFrame'
 
 ], function (
 
